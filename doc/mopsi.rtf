@@ -1,0 +1,44 @@
+MOPSI: Multilevel Monte-Carlo method for option pricing:
+
+PROBLÈME: 
+
+	Sur ShareLatex ?
+
+1) Simple Monte-Carlo method for option pricing:
+	PB : simulate S(t) many times and take the expected value of the payoff
+	discounted.
+	To do that, we must:
+		- Estimate the volatility: HV vs IV
+		
+2) Multilevel:
+	Questions:
+		- intérêt du multilevel: réduire le coût de calcul ?
+		- estimer E[P_L] requiert de simuler P_L: où est le gain de coût ?
+		- choix du nombre d'échantillons pour minimiser variance totale ?
+		- options exotiques ?
+
+TDLOG: Interface graphique + object d'accès aux données + paraléllisation
+
+PROBLÈME: 
+ - 
+	Sur Github ?
+
+	Idées de structure:
+		classes: 
+			Pour le pricing d'options:
+			- OptionPricer: classe mère qui contient les méthodes de pricing usuelles et les paramètres nécessaires
+			- EuropeanOptionPricer: classe fille redéfinit certaines méthodes pour les spécifier
+			- ExoticOptionPricer: classe fille de OP, classe mère de toutes les options exotiques
+			- AmericanOption, LookbackOption, DigitalOption,..: classes filles de ExoticOptionPricer
+
+			Pour l'interface graphique:
+			- UI: un module pour l'affichage
+			- UC: un module pour les contrôles de l'utilisateur
+
+			Pour le DAO:
+			- 
+
+		Tests:
+			Pour le pricing d'options:
+			- tester le résultat avec la solution déterministe de BS
+
