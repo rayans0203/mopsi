@@ -1,0 +1,91 @@
+body {
+text-align: center;
+}
+p {text-align: left;}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+    text-align: left;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #F1F5F8;
+}
+*
+{
+  margin: 0 auto 0 auto;
+ text-align:left;}
+#main 
+{
+margin-top:10px;
+margin-bottom:10px;
+}
+
+
+#main .main_top
+{
+height:85px;
+width:920px;
+background-image: url(main_top.png);
+background-repeat:no-repeat;
+}
+
+#main .main_body
+{
+
+padding-left:0px;
+height:auto;
+width:920px;
+background-image:url(main_body.png);
+background-repeat:repeat-y;
+color:#000000;
+padding-bottom:20px;
+
+
+}
+
+
+#main .main_top h1
+{
+font-size:24px;
+line-height:85px;
+color:#000000;
+margin:0 auto;
+padding-left: 20px;
+background-image:url(header_h1_bg.png);
+background-position:right;
+background-repeat:no-repeat;
+margin-right:25px;
+}
+
+#main .main_body p
+{
+line-height:19px;
+letter-spacing:1px;
+padding-bottom:15px;
+padding-left:20px;
+padding-right:20px;
+}
+
+
+#main .main_bottom
+{
+height:8px;
+width:920px;
+background-image:url(main_bottom.png);
+background-repeat:no-repeat;
+}
+
+
+#page
+{
+  margin: 0 auto 0 auto; 
+  margin-top:25px;
+  display: block; 
+  height:auto;
+  position: relative; 
+  overflow: hidden; 
+  width: 920px;
+  background-image: #FFFFFF
+}    
