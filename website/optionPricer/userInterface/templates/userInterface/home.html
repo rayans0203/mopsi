@@ -1,0 +1,42 @@
+{% extends 'userInterface/theslant/header.html' %}
+
+{% block content %}
+ <div id="main">
+
+	<div class="main_top">
+    	<h1>How it woks ?</h1>
+    </div>
+    
+   	<div class="main_body">
+        <p>This website was built by three undeergraduate students from the <b>École Nationale des Ponts et Chaussées (ENPC)</b> in order to price options given a set of parameters, and the model in which the user wants to price the option. </p>
+
+
+      	<p>To utilize it, the user has to fill the following inputs:<br>
+      		- Stock: name of the underlying asset;<br>
+      		- Model: the model to be used to price the asset (e.g. Black-Scholes); <br>
+      		- Order: the type of order (Call or Put);<br>
+      		- S0: current price of the underlying asset;<br>
+      		- K: the strike of the option;<br>
+      		- T: the maturity of the option;<br>
+      		- r: Interest Rate for the model;<br>
+      		- σ: volatility of the model;<br>
+      		- ε: the precision of the computed price;
+      		</p>
+        
+        <p>The outputs are the following:<br>
+        	- price of the option;<br>
+        	- computation time;<br>
+        	- the bounds of the confidence interval, considering the precision input. </p>
+        
+        <p>If you wish to have any additional information what concerning our computation method, etc... Please click <a href="http://127.0.0.1:8000/userInterface/contact">here</a> to contact us.</p>
+
+        <h3>  Disclaimer</h3>
+        <p> <i>This website is purely informative, and is not built, in any way, for investment advisory purposes. We do not take responsibility for any loss a user may have by investing.</i> </p>
+    </div>
+    
+   	<div class="main_bottom">
+
+   	</div>
+    
+</div> 
+{% endblock %}
