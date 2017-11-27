@@ -1,84 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>POP</title>
+{% load staticfiles %}
 <header>
-<style type="text/css">
-body {
-text-align: center;
-}
-p {text-align: left;}
-
-body {
-    margin: 0;
-    padding: 0;
-    background: #C1C1C1;
-    text-align: left;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    color: #F1F5F8;
-}
-*
-{
-  margin: 0 auto 0 auto;
- text-align:left;}
-
-
-#header h1
-{
-display:block;
-float:left;
-line-height:70px;
-margin-left:17px;
-width:350px;
-color:#FFFFFF;
-text-align:center;
-font-size:30px;
-font-weight:bold;
-font-family:Arial, Helvetica, sans-serif;
-float:left;
-
-}
-
-
-#header ul {
-    padding-left: 20px;
-    list-style-type: none;
-    height:21px;
-    text-align:center;
-    height:85px;
-    overflow:hidden;
-}
-#header ul li , #header ul li a, #header ul li a:visited{
-    display:block;
-    float:left;
-    margin-left: 100px;
-    text-align:center;
-    line-height:72px;
-    width:133px;
-    color:#FFFFFF;
-
-    font-size:24px;
-    font-weight:bold;
-    text-decoration:none;
-}
-
-#header ul li a:hover{
-color:#CCCCCC;
-}
-
-#header
-{
-background:#000080;
-background-repeat:no-repeat;
-width:1300px;
-height:72px;
-}
-
-</style>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
 </head>
-
 
 <body>
     <div id="page">
@@ -95,45 +23,21 @@ height:72px;
         
 </body>
 </header>
+<link rel="stylesheet" href="{% static 'css/body.css' %}" type="text/css"> 
 
 {% block content %}
-<h1> Content goes here</h1>
+<h1> Content goes here </h1>
 {% endblock %}
 
 <footer>
-<style type="text/css">
-#footer {
-display:block;
-width: 1300px;
-height:74px;
-background: #000;
-text-align:right;
-font-size:9px;
-line-height:75px;
-}
-
-#footer p{
-padding-right:20px;
-text-align:right;
-}
-
-#footer, #footer a, #footer a:visited{
-color: #000080;
-background:#000080;
-}
-
-#footer a:hover{
-text-decoration:none;
-color:#000;
-}
-</style>
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}" type="text/css">
 <body>
     <div id="page">
         
         <div id="footer">
-        <p>
-        <a href="http://www.aszx.net">web development</a> by <a href="http://www.bryantsmith.com">bryant smith</a>
-        </p>
+          <a href="{% static 'css/images.png' %}">
+          <img border="0" src="{% static 'css/images.png' %}" width="45" height="60">
+        </a>
         </div>
         
         </div>

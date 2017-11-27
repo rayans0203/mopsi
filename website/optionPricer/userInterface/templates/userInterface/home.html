@@ -1,140 +1,42 @@
 {% extends 'userInterface/theslant/header.html' %}
 
 {% block content %}
+ <div id="main">
 
-<style type="text/css">
-body {
-text-align: center;
-}
-p {text-align: left;}
-
-body {
-    margin: 0;
-    padding: 0;
-    background: #FFFFFF;
-    text-align: left;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    color: #F1F5F8;
-}
-*
-{
-  margin: 0 auto 0 auto;
- text-align:left;}
-
-#main 
-{
-margin-top:10px;
-margin-bottom:10px;
-background-image: #000000
-}
+	<div class="main_top">
+    	<h1>How it works ?</h1>
+    </div>
+    
+   	<div class="main_body">
+        <p>This website was built by three undeergraduate students from the <b>École Nationale des Ponts et Chaussées (ENPC)</b> in order to price options given a set of parameters, and the model in which the user wants to price the option. </p>
 
 
-#main .main_top
-{
-height:85px;
-width:1300px;
-background-repeat:no-repeat;
-}
-
-#main .main_body
-{
-
-padding-left:0px;
-height:auto;
-width:1300px;
-background-repeat:repeat-y;
-color:#000000;
-padding-bottom:20px;
-
-
-}
-
-
-#main .main_top h1
-{
-font-size:24px;
-line-height:85px;
-color:#000000;
-margin:0 auto;
-padding-left: 20px;
-padding-right: 90px;
-background-image:#FFF;
-background-position:right;
-background-repeat:no-repeat;
-margin-right:25px;
-}
-
-#main .main_body p
-{
-line-height:19px;
-letter-spacing:1px;
-padding-bottom:15px;
-padding-left:20px;
-padding-right:20px;
-}
-
-
-#main .main_bottom
-{
-height:8px;
-width:1300px;
-color: #000000;
-background-image: #FFFFFF;
-background-repeat:no-repeat;
-}
-
-
-#page
-{
-  margin: 0 auto 0 auto; 
-  margin-top:25px;
-  display: block; 
-  height:auto;
-  position: relative; 
-  overflow: hidden; 
-  width: 1300px;
-  background-image: #FFFFFF;
-}       
-
-</style>
-
-         <div id="main">
+      	<p>To utilize it, the user has to fill the following inputs:<br>
+      		- Stock: name of the underlying asset;<br>
+      		- Model: the model to be used to price the asset (e.g. Black-Scholes); <br>
+      		- Order: the type of order (Call or Put);<br>
+      		- S0: current price of the underlying asset;<br>
+      		- K: the strike of the option;<br>
+      		- T: the maturity of the option;<br>
+      		- r: Interest Rate for the model;<br>
+      		- σ: volatility of the model;<br>
+      		- ε: the precision of the computed price;
+      		</p>
         
-        	<div class="main_top">
-            	<h1>How it works ?</h1>
-            </div>
-            
-           	<div class="main_body">
-                <p>This website was built by three undeergraduate students from the <b>École Nationale des Ponts et Chaussées (ENPC)</b> in order to price options given a set of parameters, and the model in which the user wants to price the option. </p>
+        <p>The outputs are the following:<br>
+        	- price of the option;<br>
+        	- computation time;<br>
+        	- the bounds of the confidence interval, considering the precision input. </p>
+        
+        <p>If you wish to have any additional information what concerning our computation method, etc... Please click <a href="http://127.0.0.1:8000/userInterface/contact">here</a> to contact us.</p>
 
+        <h3>  Disclaimer</h3>
+        <p> <i>This website is purely informative, and is not built, in any way, for investment advisory purposes. We do not take responsibility for any loss a user may have by investing.</i> </p>
+    </div>
+    
+   	<div class="main_bottom">
 
-              	<p>To utilize it, the user has to fill the following inputs:<br>
-              		- Stock: name of the underlying asset;<br>
-              		- Model: the model to be used to price the asset (e.g. Black-Scholes); <br>
-              		- Order: the type of order (Call or Put);<br>
-              		- S0: current price of the underlying asset;<br>
-              		- K: the strike of the option;<br>
-              		- T: the maturity of the option;<br>
-              		- r: Interest Rate for the model;<br>
-              		<div lang="latex">
-              		- $\sigma$: volatility of the model;
-              		- $\epsilon$: the precision of the computed price;
-              		</div>
-              		</p>
-                
-                <p>The outputs are the following:<br>
-                	- price of the option;<br>
-                	- computation time;<br>
-                	- the bounds of the confidence interval, considering the precision input. </p>
-                
-                <p>If you wish to have any additional information what concerning our computation method, etc... Please click <a href="http://127.0.0.1:8000/userInterface/contact">here</a> to contact us.
-            </div>
-            
-           	<div class="main_bottom">
-           		<h1> DISCLAIMER</h1>
-           			<p>This website is purely informative, and is not built, in any way, for investment advisory purposes. We do not take responsibility for any loss a user may have by investing.</p>
-           	</div>
-            
-        </div> 
+   	</div>
+    
+</div> 
 {% endblock %}

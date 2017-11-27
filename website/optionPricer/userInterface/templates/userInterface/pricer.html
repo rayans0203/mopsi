@@ -1,115 +1,71 @@
 {% extends 'userInterface/theslant/header.html' %}
 
 {% block content %}
+ <div id="main">
 
-<style type="text/css">
-body {
-text-align: center;
-}
-p {text-align: left;}
+	<div class="main_top">
+    	<h1>Inputs: </h1>
+    </div>
+    
+   	<div class="main_body">
+   		<section>
+	    	<form>
+	    		<b> Stock  </b>      	 <input type="text" name="stock"><br><br>
+	    		<b> Order  </b>      	 <input type="text" name="order"><br><br>
+	    		<b> Model  </b>      	 <input type="text" name="model"><br><br>
+	    		<b> Strike </b>      	 <input type="text" name="strike"><br><br>
+	    		<b> Maturity </b>    	 <input type="text" name="maturity"><br><br>
+	    		<b> Volatility </b>      <input type="text" name="volatility"><br><br>
+	    		<b> Accuracy </b>        <input type="text" name="accuracy"><br><br>
+	    		<b> Interest rates </b>  <input type="text" name="rate"><br><br>
+   	
+	    	</form>
+	 	
+	    </section>
+    	<aside>
+    		<style type="text/css">
+				table {
+				    font-family: arial, sans-serif;
+				    border-collapse: collapse;
+				    width: 100%;
+				}
 
-body {
-    margin: 0;
-    padding: 0;
-    background: #FFF;
-    text-align: left;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    color: #F1F5F8;
-}
-*
-{
-  margin: 0 auto 0 auto;
- text-align:left;}
+				td, th {
+				    border: 1px solid #dddddd;
+				    text-align: left;
+				    padding: 8px;
+				}
 
-#main 
-{
-margin-top:10px;
-margin-bottom:10px;
-background-image: #000000
-}
-
-
-#main .main_top
-{
-height:85px;
-width:1300px;
-background-repeat:no-repeat;
-}
-
-#main .main_body
-{
-
-padding-left:0px;
-height:auto;
-width:1300px;
-background-repeat:repeat-y;
-color:#000000;
-padding-bottom:20px;
-
-
-}
-
-
-#main .main_top h1
-{
-font-size:24px;
-line-height:85px;
-color:#000000;
-margin:0 auto;
-padding-left: 20px;
-padding-right: 90px;
-background-image:#FFF;
-background-position:right;
-background-repeat:no-repeat;
-margin-right:25px;
-}
-
-#main .main_body p
-{
-line-height:19px;
-letter-spacing:1px;
-padding-bottom:15px;
-padding-left:20px;
-padding-right:20px;
-}
-
-
-#main .main_bottom
-{
-height:8px;
-width:1300px;
-background-image: #FFFFFF;
-background-repeat:no-repeat;
-}
-
-
-#page
-{
-  margin: 0 auto 0 auto; 
-  margin-top:25px;
-  display: block; 
-  height:auto;
-  position: relative; 
-  overflow: hidden; 
-  width: 1300px;
-  background-image: #FFFFFF
-}       
-
-</style>
-
-         <div id="main">
-        
-        	<div class="main_top">
-            	<h1>Inputs: </h1>
-            </div>
-            
-           	<div class="main_body">
-            	<p> The input text box must be set. </p>
-
-            </div>
-            
-           	<div class="main_bottom"></div>
-            
-        </div> 
+				tr:nth-child(even) {
+				    background-color: #dddddd;
+				}
+			</style>
+			<table style="width:50%">
+			  <tr>
+			    <th> Outputs </th>
+			    <th>Call Option</th> 
+			    <th>Put Option</th>
+			  </tr>
+			  <tr>
+			    <td>Theoretical price</td>
+			    <td> </td>
+			    <td> </td>
+			  </tr>
+			  <tr>
+			    <td>Delta</td>
+			    <td> </td>
+			    <td> </td>
+			  </tr>
+			  <tr>
+			    <td>Gamma</td>
+			    <td> </td>
+			    <td> </td>
+			  </tr>
+			</table>
+    	</aside>   	 
+    </div>
+    
+   	<div class="main_bottom"></div>
+    
+</div> 
 {% endblock %}
