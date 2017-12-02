@@ -1,7 +1,5 @@
 # PROJECT: DEV. OF A WEBSITE FOR OPTION PRICING WITH MULTILEVEL MONTE-CARLO METHODS
 
-# @Github address: https://github.com/rayans0203/mopsi
-
 # MOPSI folders:
 ## optionPricer: 
 - mlmc.py: contains the classes used to price an option given a set of parameters
