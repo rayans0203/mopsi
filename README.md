@@ -8,9 +8,11 @@
 - figures: all the .png files proving empirically the convergence of the methods used 
 - __init__.py: to import our files into others
 
-## notes & doc: the maths papers we studied to implement the MLMC methods
+## notes & doc: 
+- the maths papers we studied to implement the MLMC methods
 
-## tests: series of unitary tests for the classes developed in mlmc.py.
+## tests: 
+- series of unitary tests for the classes developed in mlmc.py.
 
 # TDLOG folders:
 ## website: 
