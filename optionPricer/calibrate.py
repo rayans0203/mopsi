@@ -1,18 +1,19 @@
 from mlmc import optionPricer
 import numpy as np
 import scipy.stats as ss
+import matplotlib.pyplot as plt
 
 o=optionPricer(100,100,0.25,1,r=0.05)
 
 ############# CONSTANTES NUMÉRIQUES ################
 
-n_steps=20
+n_steps=10
 n_min=30
 n_max=90
-n_a=2
-n_b=5000
+n_a=10
+n_b=4000
 m=7
-eps=1e-3
+eps=1e-2
 
 ########## PAR RECUIT SIMULÉ #############
 
@@ -116,19 +117,20 @@ def dikotomy(n,eps,m,n_steps,n_a,n_b):
 mlmc_time=[]
 mc_ee_sa_time=[]
 mc_dich_time=[]
+mc_locsearch_time=[]
 
 
 for n in range(n_min,n_max,10):
     print((n-n_min)*100/(n_min-n_max)," %")
 
     mlmc_t=0
-    mc_sa_t=0
+    #mc_sa_t=0
     mc_dich_t=0
     mc_locsearch_t=0
     for _ in range(n_steps):
         print('    ',_*100/n_steps," %")
         mlmc_t+=o.price(method="mlmc",n=n)[1]
-        mc_sa_t+=o.price(method="m1lmc",N=simulated_annealing(n,m))[1]
+        #mc_sa_t+=o.price(method="m1lmc",N=simulated_annealing(n,m))[1]
         mc_dich_t+=o.price(method="m1lmc",N=dikotomy(n,eps,m,n_steps,n_a,n_b))[1]
         mc_locsearch_t+=o.price(method="m1lmc",N=loc_search(n,eps,m,n_steps))[1]
 
@@ -136,17 +138,18 @@ for n in range(n_min,n_max,10):
     mc_sa_t/=n_steps
     mc_dich_t/=n_steps
     mlmc_time.append(mlmc_t)
-    mc_ee_sa_time.append(mc_sa_t)
+    #mc_ee_sa_time.append(mc_sa_t)
     mc_dich_time.append(mc_dich_t)
+    mc_locsearch_time.append(mc_locsearch_t)
 
 ######## Affichage des différentes méthodes de comparaison ##########
 
 n_s=list(range(n_min,n_max,10))
 
 plt.plot(n_s,mlmc_time,label="MLMC",marker="s")
-plt.plot(n_s,mc_sa_time,label="EE-SA",marker="o")
+#plt.plot(n_s,mc_sa_time,label="EE-SA",marker="o")
 plt.plot(n_s,mc_dich_time,label="EE-DICH",marker="p")
-plt.plot(n_s,mc_dich_time,label="EE-LS",marker="h")
+plt.plot(n_s,mc_locsearch_time,label="EE-LS",marker="h")
 plt.ylabel("Temps mis par la simulation avec $N_*$ échantillons")
 plt.xlabel("$n$ utilisé pour le pas de discrétisation du schéma numérique de MLMC")
 plt.legend(loc=2)
