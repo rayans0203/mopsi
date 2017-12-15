@@ -7,11 +7,11 @@ o=optionPricer(100,100,0.25,1,r=0.05)
 
 ############# CONSTANTES NUMÉRIQUES ################
 
-n_steps=10
+n_steps=5
 n_min=30
 n_max=90
 n_a=10
-n_b=4000
+n_b=3000
 m=7
 eps=1e-2
 
@@ -73,9 +73,9 @@ def loc_search(n,eps,m,n_steps):
     time_N/=n_steps
     while abs(time_n-time_N)/time_n > eps:
         if time_N>time_n:
-            N=int(N*0.97)
+            N=int(N*0.95)
         else:
-            N=int(N*1.03)
+            N=int(N*1.05)
 
         time_N=0
         for _ in range(n_steps):
@@ -135,7 +135,7 @@ for n in range(n_min,n_max,10):
         mc_locsearch_t+=o.price(method="m1lmc",N=loc_search(n,eps,m,n_steps))[1]
 
     mlmc_t/=n_steps
-    mc_sa_t/=n_steps
+    #mc_sa_t/=n_steps
     mc_dich_t/=n_steps
     mlmc_time.append(mlmc_t)
     #mc_ee_sa_time.append(mc_sa_t)
