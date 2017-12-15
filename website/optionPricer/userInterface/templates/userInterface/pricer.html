@@ -6,48 +6,63 @@
 	<div class="main_top">
     	<h1>Inputs: </h1>
     </div>
-    
+
    	<div class="main_body">
-   		<section>
-	    	<form>
-	    		<b> Stock  </b>      	 <input type="text" name="stock"><br><br>
-	    		<b> Order  </b>      	 <input type="text" name="order"><br><br>
-	    		<b> Model  </b>      	 <input type="text" name="model"><br><br>
-	    		<b> Strike </b>      	 <input type="text" name="strike"><br><br>
-	    		<b> Maturity </b>    	 <input type="text" name="maturity"><br><br>
-	    		<b> Volatility </b>      <input type="text" name="volatility"><br><br>
-	    		<b> Accuracy </b>        <input type="text" name="accuracy"><br><br>
-	    		<b> Interest rates </b>  <input type="text" name="rate"><br><br>
-   	
-	    	</form>
-	 	
-	    </section>
-    	<aside>
-    		<style type="text/css">
-				table {
-				    font-family: arial, sans-serif;
-				    border-collapse: collapse;
-				    width: 100%;
-				}
+		<style type="text/css">
+			table {
+			    font-family: arial, sans-serif;
+			    border-collapse: collapse;
+			    width: 100%;
+			}
+			td, th {
+			    border: 1px solid #dddddd;
+			    text-align: left;
+			    padding: 8px;
+			}
+			tr:nth-child(even) {
+			    background-color: #dddddd;
+			}
+		</style>
+    	<table style="width:49%;display:inline-block;padding-left:20px">
+		    <tr>
+		      <td align="right">Spot: <br> <font size="1"><i>current price of the underlying asset </i></td>
+		      <td align="left"><input type="text" name="stock" /></td>
+		    </tr>
+		    <tr>
+		      <td align="right">Strike: <br> <font size="1"><i>the strike of the option </i></font></td>
+		      <td align="left"><input type="text" name="strike" /></td>
+		    </tr>			    <tr>
+		      <td align="right">Maturity: <br> <font size="1"><i> the maturity of the option</i></font></td>
+		      <td align="left"><input type="text" name="maturity" /></td>
+		    </tr>			    <tr>
+		      <td align="right">Volatility: <br> <font size="1"><i> volatility of the model </i></font></td>
+		      <td align="left"><input type="text" name="volatility" /></td>
+		    </tr>			    <tr>
+		      <td align="right">Accuracy:<br> <font size="1"><i> the precision of the computed price</i></font></td>
+		      <td align="left"><input type="text" name="accuracy" /></td>
+		    </tr>			    <tr>
+		      <td align="right">Interest Rates: <br> <font size="1"><i> Interest Rate for the model</i></font></td>
+		      <td align="left"><input type="text" name="rate" /></td>
+		    </tr>
+		    <tr>
+		      <td align="right">Model: <br> <font size="1"><i>the model to be used to price the asset (e.g. Black-Scholes) </i></font></td>
+		      <td align="center">  
+		      	<select name="models">
+				    <option value="black-scholes">Black-Scholes</option>
+				</select>
+			</td>
+		    </tr>
+		  </table>
 
-				td, th {
-				    border: 1px solid #dddddd;
-				    text-align: left;
-				    padding: 8px;
-				}
-
-				tr:nth-child(even) {
-				    background-color: #dddddd;
-				}
-			</style>
-			<table style="width:50%">
+		<form action="" style="display:inline-block;width:50%;vertical-align:top">
+			<table style="width:100%;margin-bottom:50px;">
 			  <tr>
 			    <th> Outputs </th>
 			    <th>Call Option</th> 
 			    <th>Put Option</th>
 			  </tr>
 			  <tr>
-			    <td>Theoretical price</td>
+			    <td>Theoretical price <br> <font size="2"> <i>(confidence interval) </i> </font></td>
 			    <td> </td>
 			    <td> </td>
 			  </tr>
@@ -61,8 +76,25 @@
 			    <td> </td>
 			    <td> </td>
 			  </tr>
-			</table>
-    	</aside>   	 
+			  <tr>
+			    <td>Vega</td>
+			    <td> </td>
+			    <td> </td>
+			  </tr>
+			  <tr>
+			    <td>Thêta</td>
+			    <td> </td>
+			    <td> </td>
+			  </tr>
+			  <tr>
+			    <td>Rhô</td>
+			    <td> </td>
+			    <td> </td>
+			  </tr>
+			</table> 
+
+		   	<input class="btn btn-primary" type="submit" value="Compute" style="width:70%;margin-left:60px;cursor:pointer">
+	   </form>
     </div>
     
    	<div class="main_bottom"></div>

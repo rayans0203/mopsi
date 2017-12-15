@@ -4,24 +4,12 @@
  <div id="main">
 
 	<div class="main_top">
-    	<h1>How it works ?</h1>
     </div>
     
    	<div class="main_body">
+      <form name="intro" style="width:45%;display:inline-block;margin-left:0px;vertical-align:top;padding-left:20px;padding-right:0px;border-right:1px solid;font: 400 14px system-ui">
+        <h3>How does it work ?</h3> <br>
         <p>This website was built by three undeergraduate students from the <b>École Nationale des Ponts et Chaussées (ENPC)</b> in order to price options given a set of parameters, and the model in which the user wants to price the option. </p>
-
-
-      	<p>To utilize it, the user has to fill the following inputs:<br>
-      		- Stock: name of the underlying asset;<br>
-      		- Model: the model to be used to price the asset (e.g. Black-Scholes); <br>
-      		- Order: the type of order (Call or Put);<br>
-      		- S0: current price of the underlying asset;<br>
-      		- K: the strike of the option;<br>
-      		- T: the maturity of the option;<br>
-      		- r: Interest Rate for the model;<br>
-      		- σ: volatility of the model;<br>
-      		- ε: the precision of the computed price;
-      		</p>
         
         <p>The outputs are the following:<br>
         	- price of the option;<br>
@@ -30,10 +18,62 @@
         
         <p>If you wish to have any additional information what concerning our computation method, etc... Please click <a href="http://127.0.0.1:8000/userInterface/contact">here</a> to contact us.</p>
 
+        <h3> Research Papers </h3>
+            
+        <div class="col">
+          <ul>
+            <font size="2">
+            
+                <li><a href="https://arxiv.org/pdf/1510.03590.pdf">Kebaier, A. & Lelong, J. Coupling Importance Sampling and Multilevel Monte Carlo using Sample Average Approximation , Submitted (2015)</a>
+                </li>
+                <li><a href="https://www.math.univ-paris13.fr/~kebaier/multilevel_Asian.pdf">Ben Alaya, M. & Kebaier, A. Multilevel Monte Carlo for Asian options and limit theorems. Monte Carlo Methods and Applications. 20 (2014), no. 3, 181-194.</a></li>
+                <li><a href="https://arxiv.org/pdf/1212.1377.pdf">Multilevel Monte Carlo methods for applications in finance, Mike Giles, Lukasz Szpruch, August 22, 2013</a></li>
+                <li><a href="https://www.math.univ-paris13.fr/~kebaier/Kebaier_Paper.pdf">
+                Kebaier, A. Statistical Romberg Extrapolation: A New Variance Reduction Method and Applications to Option Pricing, Ann. Appl. Probab. 15 (2005), no. 4, 2681--2705.</a>
+                </li>
+            </font>
+          </ul>
+
+        </div>
         <h3>  Disclaimer</h3>
         <p> <i>This website is purely informative, and is not built, in any way, for investment advisory purposes. We do not take responsibility for any loss a user may have by investing.</i> </p>
+      </form>
+      <form style="width:50%;display:inline-block;padding-left:5px;padding-right:0px;vertical-align:top">
+        <h3> Recent News </h3>
+        <div class="col">
+<!--           <div class="element element--latestNews">
+            <mw-latest-news>
+              <div class="element__options">
+                  <h4 class="heading"><a href="https://www.marketwatch.com/newsviewer">Latest News</a><small class="gray"> All Times Eastern</small></h4>
+                  <div class="btn--scroll">
+                      <i class="scroll__up icon--arrow-up"></i>
+                      <i class="scroll__down icon--arrow-down"></i>
+                  </div>
+              </div>
+            </mw-latest-news>
+          </div> 
+        </div> -->
+
+        <div class="col">
+          <div class="row-xs-1"> <a class="icon fa fa-twitter" href="https://twitter.com/MarketWatch"></a> 
+          </div>
+          <div class="row-xs-11 row-sm-5">
+            <div style="text-align:center">
+              <a href="https://twitter.com/MarketWatch" class="twitter-follow-button" data-show-count="false">Follow @MarketWatch</a>
+            </div>
+            <a class="twitter-timeline" data-height="600" data-dnt="true" data-link-color="#2B7BB9" href="https://twitter.com/MarketWatch"></a>
+          </div>
+        </div>
+          <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <div id="fb-root"></div>
+          <script>!function(d,s,id){
+            var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+            if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);
+            }}(document, 'script', 'twitter-wjs');
+          </script>
+      </form>
     </div>
-    
+
    	<div class="main_bottom">
 
    	</div>

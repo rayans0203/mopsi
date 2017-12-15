@@ -13,3 +13,7 @@ def pricer(request):
 def contact(request):
 
 	return render(request,'userInterface/contact.html')
+
+def forum(request):
+
+	return render(request,'userInterface/faq.html')
