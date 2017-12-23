@@ -1,0 +1,86 @@
+<style type="text/css">
+
+body {
+text-align: center;
+}
+p {text-align: left;}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #C1C1C1;
+    background-image: url(background.png);
+    text-align: left;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #F1F5F8;
+}
+*
+{
+  margin: 0 auto 0 auto;
+ text-align:left;}
+
+
+#header h1
+{
+	display:block;
+	float:left;
+	line-height:70px;
+	margin-left:17px;
+	width:230px;
+	color:#FFFFFF;
+	text-align:left;
+	font-size:20px;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	float:left;
+}
+
+#header ul {
+    padding-left: 0px;
+    list-style-type: none;
+    height:21px;
+    text-align:center;
+    height:85px;
+    overflow:hidden;
+}
+#header ul li , #header ul li a, #header ul li a:visited{
+    display:block;
+    float:left;
+    margin-left: 0px;
+    text-align:center;
+    line-height:72px;
+    width:133px;
+    color:#FFFFFF;
+    font-size:16px;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+#header ul li a:hover{
+color:#CCCCCC;
+}
+
+#header
+{
+	background-image: url(slide.png);
+	border-radius: 5px;
+	background-repeat:no-repeat;
+	width:2000px;
+	height:75px;
+	border-radius: 10px;
+	position: relative;
+}
+
+#header_cover
+{
+    margin-top: 5px;
+    height: 200px;
+    border-radius: 5px;
+    background: url(bourse_header.jpg) no-repeat;
+    position: relative;
+    margin-bottom: 7px;
+}
+
+
+</style>
