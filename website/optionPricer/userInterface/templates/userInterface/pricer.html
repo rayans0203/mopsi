@@ -6,9 +6,8 @@
 	<div class="main_top">
     	<h1>Inputs: </h1>
     </div>
-    
+
    	<div class="main_body">
-		
 		<style type="text/css">
 			.form_col {
 				text-align: left;
@@ -45,7 +44,7 @@
 			<input name="Model" id="Model" type=number />
 			<!--<label><input name="Model" type="radio" value="1" />Modèle 1</label>
 			<label><input name="Model" type="radio" value="2" />Modèle 2</label>
-			<!-- <span class="tooltip">Vous devez sélectionnez le modèle</span> -->
+			<!--<span class="tooltip">Vous devez sélectionnez le modèle</span> -->
 			<br /><br />
 			
 			<label class="form_col" for="Strike">Strike :</label>
@@ -127,13 +126,53 @@
 				var Accuracy=document.getElementById('Accuracy').value;
 				var InterestRates=document.getElementById('InterestRates').value;
 				
-				//document.getElementById("callPrice").innerHTML = Stock; // ca marche
-				calculate(Stock,Order,e);
+				// calculate(Stock,Order,e);
+
+				// PARTIE RAYAN: ESSAI
+				var xhr = new XMLHttpRequest();
+				xhr.open("GET", 'http://127.0.0.1:8000/userInterface/computation', true); // true for asynchronous 
+
+			    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			    xhr.onreadystatechange = function() { 
+			         if (xhr.readyState == 4 && xhr.status == 200){ // si la réponse du serveur a bien été reçue
+						var response = JSON.parse(this.responseText);
+						var callPriceText = document.createTextNode(response.payoff);
+						var callPrice = document.getElementById('callPrice');
+						function clearElement(element) {
+							while (element.firstChild) {
+								element.removeChild(element.firstChild);
+							}
+						}
+						clearElement(callPrice);
+			           	callPrice.appendChild(callPriceText);
+						var putPriceText = document.createTextNode(response.time);
+						var putPrice = document.getElementById('putPrice');
+						clearElement(putPrice);
+						putPrice.appendChild(putPriceText);
+						
+			            // PROBLEME: avec la ligne de dessous, on voit que, quand on clique sur le bouton
+			            // "Calculate", tout le fichier "computation.html" s'affiche dans la fenetre de warning
+			            // or on aimerait avoir uniquement le prix ( correspondant à {{ payoff }} dans computation.html)
+
+			            // rien ne s affiche si "responseText" est remplacé par "responseXML"
+
+			            // ce que je ne comprends pas: comme indiqué dans "compuation.html", 
+			            // j'utilise la méthode POST, avec une XMLHTTPRequest, pour envoyer (send) la string
+			            // params, au fichier pricer.html mais la chose qui est récupérée est visiblement tout le fichier computation.html
+
+			            // LA QUESTION EST DONC: ayant récupéré le payoff, dans le fichier computation.html
+			            // grâce à la commande {{payoff}}, comment depuis 'computation.html' envoyer cette donnée
+			            // et la récupérer dans ce fichier 'pricer.html'
+			         }
+			    }
+			   
+			    xhr.send(null);
 				
 				e.preventDefault();
 
 			});
 			
+			// PARTIE LINA: j'ai pas touché
 			paramForm.addEventListener('reset', function() {
 				for (var i = 0; i < inputsLength; i++) {
 				inputs[i].className = '';
@@ -143,25 +182,22 @@
 			//tuto : https://openclassrooms.com/courses/dynamisez-vos-sites-web-avec-javascript/xmlhttprequest-1
 			function calculate(Stock,Order,e){
 				var xhr = new XMLHttpRequest();
-				xhr.open('POST', 'userInterface/p.py');
-				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-				xhr.send('a=' + Stock + '&b=' + Order);
-				xhr.addEventListener('readystatechange', function() { 
-					if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 0) { 
-						document.getElementById('callPrice').innerHTML = xhr.responseText;
-						alert('yes!'); 
-						e.preventDefault();
-					}
-				});
-
-			xhr.send(null); 
+				print("hi")
+				console.log(xhr)
+			    xhr.open("GET", 'http://127.0.0.1:8000/userInterface/computation/', true); // true for asynchronous 
+			    xhr.onreadystatechange = function() { 
+			        if (xhr.readyState == 4 && xhr.status == 200)
+			            document.getElementById('callPrice').innerHTML = "plouf";//xhr.responseXML;
+			    }
+			   
+			    xhr.send(null);
 				
 			};
 			
 		})();
 	
 	</script>
-	
+    
    	<div class="main_bottom"></div>
     
 </div> 
