@@ -64,7 +64,7 @@ def build_Cox_Ross(W,rho,kappa,theta,xi,dt,pricer):
 ######### OptionPricer class ##########
 
 class optionPricer():
-    def __init__(self,S0,K,sigma,T,model,r=np.log(1.1),order="call",**kwargs):
+    def __init__(self,S0,K,sigma,T,model,order="call",r=np.log(1.1),**kwargs):
         self.order=order
         self.S0=S0
         self.strike=K
@@ -118,14 +118,14 @@ class optionPricer():
             dt=self.maturity/n
             for j in range(N):
                 W=build_BM(n,np.sqrt(dt))
-                W_acc=W[1:]-W[:n]
+                W_ind=np.random.normal(0,np.sqrt(dt),n)
                 if self.model=="Heston":
                     v=build_Cox_Ross(W,self.rho,self.kappa,self.theta,self.xi,dt,self)
                     for k in range(n):
-                        S[j]=self.euler(S[j],dt,W_acc[k],v[k])
+                        S[j]=self.euler(S[j],dt,W_ind[k],v[k])
                 else:
                     for k in range(n):
-                        S[j]=self.euler(S[j],dt,W_acc[k])
+                        S[j]=self.euler(S[j],dt,W_ind[k])
         else:
             future_res=[pool.apply_async(M1LMC_simulation(s),(self,n)) for _ in range(N)]
             S=np.array([f.get() for f in future_res])
@@ -159,27 +159,25 @@ class optionPricer():
                 for i in range(m**(l-1)):
                     W_coarse[i+1]=W_thin[(i+1)*m]
                 dt_coarse=self.maturity/(m**(l-1))
-
-                W_thin_acc=W_thin[1:]-W_thin[:m**l]
-                W_coarse_acc=W_coarse[1:]-W_coarse[:m**(l-1)]
                 if self.model=="Heston":
                     v_thin=build_Cox_Ross(W_thin,self.rho,self.kappa,self.theta,self.xi,dt_thin,self)
                     v_coarse=build_Cox_Ross(W_coarse,self.rho,self.kappa,self.theta,self.xi,dt_coarse,self)
                     for i in range(m**l):
-                        S_thin[j]=self.euler(S_thin[j],dt_thin,W_thin_acc[i],v_thin[i])
+                        S_thin[j]=self.euler(S_thin[j],dt_thin,np.random.normal(0,np.sqrt(dt_thin)),v_thin[i])
                         if i%m==0:
-                            S_coarse[j]=self.euler(S_coarse[j],dt_coarse,W_coarse_acc[i//m],v_coarse[i//m])
+                            S_coarse[j]=self.euler(S_coarse[j],dt_coarse,np.random.normal(0,np.sqrt(dt_coarse)),v_coarse[i//m])
                 elif self.model=="BS":
                     for i in range(m**l):
-                        S_thin[j]=self.euler(S_thin[j],dt_thin,W_thin_acc[i])
+                        S_thin[j]=self.euler(S_thin[j],dt_thin,np.random.normal(0,np.sqrt(dt_thin)))
                         if i%m==0:
-                            S_coarse[j]=self.euler(S_coarse[j],dt_coarse,W_coarse_acc[i//m])
+                            S_coarse[j]=self.euler(S_coarse[j],dt_coarse,np.random.normal(0,np.sqrt(dt_coarse)))
             P_thin=self.payoff(S_thin)
             P_coarse=self.payoff(S_coarse)
             Payoff+=P_thin-P_coarse
             print(np.exp(-self.rate*self.maturity)*Payoff)
         return np.exp(-self.rate*self.maturity)*Payoff
-    def price(self,method="mc_e",pool=None,m=2,N=10**3,n=90,alpha=0.05):
+    def price(self,order,method="mc_e",pool=None,m=2,N=10**3,n=100,alpha=0.05):
+        self.order=order
         if method=="bs":
             start=time()
             payoff=self.BlackScholes()
@@ -208,8 +206,8 @@ class optionPricer():
             return [mu-ss.norm.cdf(1-alpha/2)*np.sqrt(V/n),
                     mu+ss.norm.cdf(1-alpha/2)*np.sqrt(V/n)]
 
-
-o=optionPricer(100,100,0.2,3,"Heston",kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
-print("reference price: {}".format(o.price("mc")))
-print('MLMC price with Heston model: {}'.format(o.price("mlmc")))
+if __name__=="__main__":
+    o=optionPricer(100,100,0.2,3,"BS",kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
+    print("reference price: {}".format(o.price("put","bs")))
+    print('MLMC price with Heston model: {}'.format(o.price("call","mlmc")))
 

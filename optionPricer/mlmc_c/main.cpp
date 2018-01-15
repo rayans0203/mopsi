@@ -14,16 +14,18 @@ int main(){
     const double v0=0.1;
 
     const int N_samples=10000;
-    const int n_euler=50;
-    const int m_levels=7;
+    const int n_euler=100;
+    const int m_levels=2;
 
     Payoff* payoff= new PayoffCall(K);
-    Model* model= new BlackScholes(r,vol);
-    //Model* model= new Heston(r,kappa,theta,xi,rho,v0);
-    AsianOption* o= new AsianOption(K,T,S0,model,payoff);
+    //Model* model= new BlackScholes(r,vol);
+    Model* model= new Heston(r,kappa,theta,xi,rho,v0);
+    EuropeanOption* o= new EuropeanOption(K,T,S0,model,payoff);
 
     //cout << o->BlackScholes("call") << endl;
     //cout << o->MC_explicit(N_samples)<< endl;
+
+    // asian option: reference price: 11.8424
     cout << o->MC(N_samples,n_euler) << endl;
     cout << o->MLMC(n_euler,m_levels) << endl;
     return 0;

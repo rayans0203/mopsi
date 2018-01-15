@@ -105,7 +105,7 @@ double AsianOption::MC(const int& N_samples, const int& n_euler) const{
 
 double AsianOption::MLMC(const int& n_euler, const int& m_levels) const{
     int L=int(log(n_euler)/log(m_levels));
-    int N0=int((m_levels-1)*T*n_euler*n_euler*L);
+    int N0=int((m_levels*m_levels-1)*n_euler*n_euler*(1-1/sqrt(n_euler))/(sqrt(m_levels-1)));
 
     double payoff_price=0;
     for (int i =0; i <N0;++i){
@@ -115,7 +115,7 @@ double AsianOption::MLMC(const int& n_euler, const int& m_levels) const{
     }
     payoff_price/=N0;
     for (int level=1; level < L; level++){
-        int nl=pow(m_levels,level);
+        float nl=pow(m_levels,3*level/2);
         int Nl=int(N0/nl);
         double dt_thin=T/nl;
         double dt_coarse=m_levels*dt_thin;

@@ -38,9 +38,9 @@ def simulated_annealing(n,m,n_steps=5):
     count=0
     while T>T_min:
         if time_N>t:
-            N=int(best_N*0.95)
+            N=int(best_N*0.93)
         elif time_N<t:
-            N=int(best_N*1.05)
+            N=int(best_N*1.07)
         time_N=0
         for _ in range(n_steps):
             time_N+=o.price(method="m1lmc",N=N)[1]
