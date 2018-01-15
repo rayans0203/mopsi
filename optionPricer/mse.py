@@ -1,6 +1,8 @@
 from mlmc import optionPricer
-from calibrate import dikotomy,loc_search,simulated_annealing
+from calibrate_py import dikotomy,loc_search,simulated_annealing
 import multiprocessing as mp
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 o=optionPricer(100,100,0.25,1,r=0.05)
@@ -27,31 +29,31 @@ o=optionPricer(100,100,0.25,1,r=0.05)
 #     times=[data[k][1] for k in range(len(data))]
 #     return err/max_iter,np.mean(times)
 
-def mse(ref,pricer,simulations,method,pool=None,max_iter=100):
+def mse(ref,pricer,n,N,method,pool=None,max_iter=300):
     err=0
     times=[]
     for _ in range(max_iter):
         print(method+' {}% '.format(100*_/max_iter))
-        output=pricer.price(method,pool,N=simulations,n=simulations)
+        output=pricer.price(method,pool,N=N,n=n)
         omc,t=output[0],output[1]
         err+=(omc-ref)**2
         times.append(t)
     return err/max_iter,np.mean(times)
 
 obs=o.price(method="bs")
-a=np.array([20,40,60,80,100])
+a=np.array([20,30,50,60,70,80])
 
 ########## Comparison of MLMC and MC ###############
 
 pool=mp.Pool(4)
 #a_SA=list(map(lambda x: simulated_annealing(x,polynom),a))
 #a_locsearch=list(map(lambda x: loc_search(x,1e-3,4,10),a))
-a_diko=list(map(lambda x: dikotomy(x,1e-3,4,10,2,5000),a))
-outputs_m1lmc=list(map(lambda x: mse(obs,o,x,"m1lmc"),a_diko))
+a_diko=list(map(lambda x: loc_search(x,1e-2,7,10,2,3500),a))
+outputs_m1lmc=list(map(lambda x,y: mse(obs,o,x,y,"m1lmc"),a,a_diko))
 MSE_m1lmc=[outputs_m1lmc[k][0] for k in range(len(outputs_m1lmc))]
 TIMES_m1lmc=[outputs_m1lmc[k][1] for k in range(len(outputs_m1lmc))]
 
-outputs_mlmc=list(map(lambda x: mse(obs,o,x,"mlmc"),a))
+outputs_mlmc=list(map(lambda x: mse(obs,o,x,0,"mlmc"),a))
 MSE_mlmc=[outputs_mlmc[k][0] for k in range(len(outputs_mlmc))]
 TIMES_mlmc=[outputs_mlmc[k][1] for k in range(len(outputs_mlmc))]
 
