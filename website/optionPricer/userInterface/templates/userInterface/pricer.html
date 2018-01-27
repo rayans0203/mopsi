@@ -1,14 +1,9 @@
 {% extends 'userInterface/theslant/header.html' %}
-
+	
 {% block content %}
- <div id="main">
-
-	<div class="main_top">
-    	<h1>Inputs: </h1>
-    </div>
-
-   	<div class="main_body">
-		<style type="text/css">
+ 
+	
+	<style type="text/css">
 			.form_col {
 				text-align: left;
 				display: inline-block;
@@ -17,188 +12,30 @@
 				width: 200px;
 				min-height: 1px;
 				text-align: right;
+				
 			}
 			input {
 				padding: 2px;
-				border: 1px solid #CCC;
+				border: 1px solid #ddd;
 				border-radius: 2px;
-				outline: none; 
+				<!--outline: none; -->
 				}
 			
-		</style>	
-    
+			tr:nth-child(even) {background-color: #f2f2f2;}
+			
+	</style>	
 	
-		<form id="paramForm">
-			
-			<label class="form_col" for="Stock">Stock :</label>
-			<input name="Stock" id="Stock" type=number />
-			<!--<span class="tooltip">La valeur doit être positive</span> -->
-			<br /><br />
-			
-			<label class="form_col" for="Order">Order :</label>
-			<input name="Order" id="Order" type=number />
-			<!--<span class="tooltip">La valeur doit être positive</span> -->
-			<br /><br />
-			
-			<span class="form_col">Model :</span>
-			<input name="Model" id="Model" type=number />
-			<!--<label><input name="Model" type="radio" value="1" />Modèle 1</label>
-			<label><input name="Model" type="radio" value="2" />Modèle 2</label>
-			<!--<span class="tooltip">Vous devez sélectionnez le modèle</span> -->
-			<br /><br />
-			
-			<label class="form_col" for="Strike">Strike :</label>
-			<input name="Strike" id="Strike" type=number />
-			<!-- <span class="tooltip">La valeur doit être positive</span> -->
-			<br /><br />
-			
-			<label class="form_col" for="Maturity">Maturity :</label>
-			<input name="Maturity" id="Maturity" type=number />
-			<!--<span class="tooltip">La valeur doit être positive</span> -->
-			<br /><br />
-			
-			<label class="form_col" for="Volatility">Volatility :</label>
-			<input name="Volatility" id="Volatility" type=number />
-			<!-- <span class="tooltip">La valeur doit être positive</span> -->
-			<br /><br />
-			
-			<label class="form_col" for="Accuracy">Accuracy :</label>
-			<input name="Accuracy" id="Accuracy" type=number />
-			<!-- <span class="tooltip">La valeur doit être positive</span> -->
-			<br /><br />
-			
-			<label class="form_col" for="InterestRates">Interest Rates :</label>
-			<input name="InterestRates" id="InterestRates" type=number />
-			<!-- <span class="tooltip">La valeur doit être positive</span>  -->
-			<br /><br />
+	<form action="{% url "pricer" %}" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Submit" />
 		
-			<input type="submit" value="Calculate" /> <input type="reset" value="Cancel " />
+		<p> Price : {{ payoff }} </p>
+		<p> Time : {{ time }}</p>
 		
-		</form>
 		
-		<table style="width:50%">
-			<tr>
-				<th> Outputs </th>
-				<th> Call Option</th> 
-				<th> Put Option</th>
-			</tr>
-			<tr>
-				<td>Theoretical price</td>
-				<td id="callPrice"> </td>
-				<td id="putPrice"> </td>
-			</tr>
-			<tr>
-				<td>Delta</td>
-				<td id="callDelta"> </td>
-				<td id="putDelta"> </td>
-			</tr>
-			<tr>
-				<td>Gamma</td>
-				<td id="callGamma"> </td>
-				<td id="callGamma"> </td>
-			</tr>
-		</table> 
-		
-	</div>
+	</form>
 	
-	<!--<script src="C:/Users/linaf/Desktop/mopsi/website/optionPricer/userInterface/static/js" type="text/javascript"></script>-->
-	
-	<script>
-	
-	(function() { 
-	
-			// tuto : https://openclassrooms.com/courses/dynamisez-vos-sites-web-avec-javascript/tp-un-formulaire-interactif-1
-
-			var paramForm = document.getElementById('paramForm'),
-				inputs = document.querySelectorAll('input[type=text], input[type=password]'),
-				inputsLength = inputs.length;
-
-			
-			// il faut prevoir des fonctions qui verifient les types entres
-			
-			paramForm.addEventListener('submit', function(e) {
-				var Stock=document.getElementById('Stock').value;
-				var Order=document.getElementById('Order').value;
-				var Model=document.getElementById('Model').value;
-				var Strike=document.getElementById('Strike').value;
-				var Maturity=document.getElementById('Maturity').value;
-				var Volatility=document.getElementById('Volatility').value;
-				var Accuracy=document.getElementById('Accuracy').value;
-				var InterestRates=document.getElementById('InterestRates').value;
-				
-				// calculate(Stock,Order,e);
-
-				// PARTIE RAYAN: ESSAI
-				var xhr = new XMLHttpRequest();
-				xhr.open("GET", 'http://127.0.0.1:8000/userInterface/computation', true); // true for asynchronous 
-
-			    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			    xhr.onreadystatechange = function() { 
-			         if (xhr.readyState == 4 && xhr.status == 200){ // si la réponse du serveur a bien été reçue
-						var response = JSON.parse(this.responseText);
-						var callPriceText = document.createTextNode(response.payoff);
-						var callPrice = document.getElementById('callPrice');
-						function clearElement(element) {
-							while (element.firstChild) {
-								element.removeChild(element.firstChild);
-							}
-						}
-						clearElement(callPrice);
-			           	callPrice.appendChild(callPriceText);
-						var putPriceText = document.createTextNode(response.time);
-						var putPrice = document.getElementById('putPrice');
-						clearElement(putPrice);
-						putPrice.appendChild(putPriceText);
-						
-			            // PROBLEME: avec la ligne de dessous, on voit que, quand on clique sur le bouton
-			            // "Calculate", tout le fichier "computation.html" s'affiche dans la fenetre de warning
-			            // or on aimerait avoir uniquement le prix ( correspondant à {{ payoff }} dans computation.html)
-
-			            // rien ne s affiche si "responseText" est remplacé par "responseXML"
-
-			            // ce que je ne comprends pas: comme indiqué dans "compuation.html", 
-			            // j'utilise la méthode POST, avec une XMLHTTPRequest, pour envoyer (send) la string
-			            // params, au fichier pricer.html mais la chose qui est récupérée est visiblement tout le fichier computation.html
-
-			            // LA QUESTION EST DONC: ayant récupéré le payoff, dans le fichier computation.html
-			            // grâce à la commande {{payoff}}, comment depuis 'computation.html' envoyer cette donnée
-			            // et la récupérer dans ce fichier 'pricer.html'
-			         }
-			    }
-			   
-			    xhr.send(null);
-				
-				e.preventDefault();
-
-			});
-			
-			// PARTIE LINA: j'ai pas touché
-			paramForm.addEventListener('reset', function() {
-				for (var i = 0; i < inputsLength; i++) {
-				inputs[i].className = '';
-				}
-			});
-			
-			//tuto : https://openclassrooms.com/courses/dynamisez-vos-sites-web-avec-javascript/xmlhttprequest-1
-			function calculate(Stock,Order,e){
-				var xhr = new XMLHttpRequest();
-				print("hi")
-				console.log(xhr)
-			    xhr.open("GET", 'http://127.0.0.1:8000/userInterface/computation/', true); // true for asynchronous 
-			    xhr.onreadystatechange = function() { 
-			        if (xhr.readyState == 4 && xhr.status == 200)
-			            document.getElementById('callPrice').innerHTML = "plouf";//xhr.responseXML;
-			    }
-			   
-			    xhr.send(null);
-				
-			};
-			
-		})();
-	
-	</script>
-    
-   	<div class="main_bottom"></div>
-    
-</div> 
+ 
+  
 {% endblock %}
