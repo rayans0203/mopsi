@@ -16,12 +16,19 @@ def contact(request):
 
 	return render(request,'userInterface/contact.html')
 
-def computation(request):
+def computation(request,S0,K,sigma,T,r,Model,Type,Method):
 	# lorsque l'on clique sur le bouton Calculate, on effectue le calcul
+	S0=float(S0)
+	K=float(K)
+	sigma=float(sigma)
+	T=float(T)
+	r=float(r)
 
-	o=mlmc.optionPricer(100,100,0.2,3,"BS",kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
-	call,time_call=o.price("call","bs")
-	put,time_put=o.price("put","bs")
+	o=mlmc.optionPricer(S0,K,sigma,T,Model,Type,r=r,kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
+	call,time_call=o.price("call",Method)
+	put,time_put=o.price("put",Method)
+
+	# rajouter le calcul du delta, gamma et intervalle de confiance
 
 	context={'call':round(call,2),'put':round(put,2)}
 
