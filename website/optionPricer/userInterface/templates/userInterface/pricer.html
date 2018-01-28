@@ -4,7 +4,7 @@
  <div id="main">
 
 	<div class="main_top">
-    	<h1>Inputs: </h1>
+    	<h1> </h1>
     </div>
 
    	<div class="main_body">
@@ -14,11 +14,12 @@
 				display: inline-block;
 				margin-right: 15px;
 				padding: 3px 0px;
-				width: 200px;
+				width: 70px;
 				min-height: 1px;
 				text-align: right;
 			}
 			input {
+				margin-left:10px;
 				padding: 2px;
 				border: 1px solid #CCC;
 				border-radius: 2px;
@@ -28,47 +29,55 @@
 		</style>	
     
 	
-		<form id="paramForm">
+		<form id="paramForm" style="width=55%">
 			
 			<label class="form_col" for="Stock">Stock :</label>
-			<input name="Stock" id="Stock" type=number />
+			<input name="Stock" id="Stock" type=number step="0.001" min="0" value="100"/>
 			<!--<span class="tooltip">La valeur doit être positive</span> -->
 			<br /><br />
 			
-			<label class="form_col" for="Order">Order :</label>
-			<input name="Order" id="Order" type=number />
-			<!--<span class="tooltip">La valeur doit être positive</span> -->
-			<br /><br />
+			<label class="form_col">Model :</label>
+			<select id="Model">
+  				<option value="BS">Black-Scholes</option>
+  				<option value="Heston">Heston</option>
+			</select>
+			<!--<span class="tooltip">Vous devez sélectionnez le modèle</span>-->
+
+			<br /> <br />
 			
-			<span class="form_col">Model :</span>
-			<input name="Model" id="Model" type=number />
-			<!--<label><input name="Model" type="radio" value="1" />Modèle 1</label>
-			<label><input name="Model" type="radio" value="2" />Modèle 2</label>
-			<!--<span class="tooltip">Vous devez sélectionnez le modèle</span> -->
-			<br /><br />
-			
+			<span class="form_col">Type :</span>
+			<select id="Type">
+  				<option value="E">European</option>
+  				<option value="A">Asian</option>
+			</select>
+			<br /><br/>
+
+			<span class="form_col">Method :</span>
+			<select id="Method">
+  				<option value="bs">Black-Scholes</option>
+  				<option value="mc_e">Monte-Carlo Explicit</option>
+   				<option value="mc">Monte-Carlo with Euler Scheme</option>
+  				<option value="mlmc">Multilevel Monte-Carlo</option>
+			</select>
+			<br /><br/>
+
 			<label class="form_col" for="Strike">Strike :</label>
-			<input name="Strike" id="Strike" type=number />
+			<input name="Strike" id="Strike" type=number step="0.001" min="0" value="100"/>
 			<!-- <span class="tooltip">La valeur doit être positive</span> -->
 			<br /><br />
 			
 			<label class="form_col" for="Maturity">Maturity :</label>
-			<input name="Maturity" id="Maturity" type=number />
+			<input name="Maturity" id="Maturity" type=number step="0.001" min="0" value="1"/>
 			<!--<span class="tooltip">La valeur doit être positive</span> -->
 			<br /><br />
 			
 			<label class="form_col" for="Volatility">Volatility :</label>
-			<input name="Volatility" id="Volatility" type=number />
-			<!-- <span class="tooltip">La valeur doit être positive</span> -->
-			<br /><br />
-			
-			<label class="form_col" for="Accuracy">Accuracy :</label>
-			<input name="Accuracy" id="Accuracy" type=number />
+			<input name="Volatility" id="Volatility" type=number step="0.001" min="0" value="0.2"/>
 			<!-- <span class="tooltip">La valeur doit être positive</span> -->
 			<br /><br />
 			
 			<label class="form_col" for="InterestRates">Interest Rates :</label>
-			<input name="InterestRates" id="InterestRates" type=number />
+			<input name="InterestRates" id="InterestRates" type=number step="0.001" min="0" value="0.1"/>
 			<!-- <span class="tooltip">La valeur doit être positive</span>  -->
 			<br /><br />
 		
@@ -76,7 +85,10 @@
 		
 		</form>
 		
-		<table style="width:50%">
+		<table style="width:50%; display:inline-block; padding-left:50px">
+			<col width="40%">
+			<col width="25%">
+			<col width="25%">
 			<tr>
 				<th> Outputs </th>
 				<th> Call Option</th> 
@@ -108,31 +120,29 @@
 	(function() { 
 	
 			// tuto : https://openclassrooms.com/courses/dynamisez-vos-sites-web-avec-javascript/tp-un-formulaire-interactif-1
-
 			var paramForm = document.getElementById('paramForm'),
 				inputs = document.querySelectorAll('input[type=text], input[type=password]'),
 				inputsLength = inputs.length;
-
-			
-			// il faut prevoir des fonctions qui verifient les types entres
 			
 			paramForm.addEventListener('submit', function(e) {
 				var Stock=document.getElementById('Stock').value;
-				var Order=document.getElementById('Order').value;
-				var Model=document.getElementById('Model').value;
 				var Strike=document.getElementById('Strike').value;
 				var Maturity=document.getElementById('Maturity').value;
+				var type = document.getElementById("Type");
+				var Type = type.options[type.selectedIndex].value;
+				var method = document.getElementById("Method");
+				var Method = method.options[method.selectedIndex].value;
+				var model = document.getElementById("Model");
+				var Model = model.options[model.selectedIndex].value;
 				var Volatility=document.getElementById('Volatility').value;
-				var Accuracy=document.getElementById('Accuracy').value;
 				var InterestRates=document.getElementById('InterestRates').value;
 				
-				// calculate(Stock,Order,e);
-
 				// PARTIE RAYAN: ESSAI
 				var xhr = new XMLHttpRequest();
-				xhr.open("GET", 'http://127.0.0.1:8000/userInterface/computation/', true); // true for asynchronous 
 
-	    xhr.onreadystatechange = function() { 
+				var entries=String(Stock)+'/'+String(Strike)+'/'+String(Volatility)+'/'+String(Maturity)+'/'+String(InterestRates)+'/'+String(Model)+'/'+String(Type)+'/'+String(Method)+'/';
+				xhr.open("GET", 'http://127.0.0.1:8000/userInterface/computation/'+entries, true); // true for asynchronous 
+			    xhr.onreadystatechange = function() { 
 			         if (xhr.readyState == 4 && xhr.status == 200){ // si la réponse du serveur a bien été reçue
 						var response = JSON.parse(this.responseText);
 						var callPriceText = document.createTextNode(response.call);
@@ -162,7 +172,6 @@
 				inputs[i].className = '';
 				}
 			});
-
 			
 		})();
 	
