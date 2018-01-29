@@ -17,8 +17,15 @@ body {
 }
 *
 {
-  margin: 0 auto 0 auto;
+ margin: 0 auto 0 auto;
  text-align:left;}
+ 
+#logo
+{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
 
 
 #header h1
@@ -81,6 +88,24 @@ color:#CCCCCC;
     position: relative;
     margin-bottom: 7px;
 }
+
+#banniere_description
+{
+    position: absolute;
+    bottom: 0;
+    border-radius: 0px 0px 5px 5px;
+    width: 99.5%;
+    height: 20px;
+    padding-top: 10px;
+    padding-right: 4px;
+    background-color: rgba(24,24,24,0.6);
+    color: white;
+    font-size: 1em;
+	margin-right:100px;
+	text-align: right;
+    
+}
+
 
 
 </style>

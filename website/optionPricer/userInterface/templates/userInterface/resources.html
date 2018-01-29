@@ -1,0 +1,121 @@
+{% extends 'userInterface/theslant/header.html' %}
+
+{% block content %}	
+{% load staticfiles %}
+
+<style type="text/css">
+	
+	
+	div.colonnes {
+		display: table;
+		border-collapse: separate; 
+		border-spacing: 5px; 
+		border: none
+		
+	}
+
+	p.colonne {
+		display: table-cell;
+		padding: 5px;
+		border: none
+	}
+
+	.center {
+		margin-left: auto;
+		margin-right: auto;
+		display: block
+	}
+	
+</style>
+ 
+ <div id="main">
+
+	<div class="main_top">
+    	<h1> Resources </h1>
+		
+    </div>
+		
+    
+   	<div class="main_body">
+		
+		
+		<p>
+		Exchange-traded options first started trading back in 1973. But over the past decade, 
+		the popularity of options has grown in leaps and bounds. According to data compiled by
+		the Options Industry Council, the total volume of options contracts traded on U.S. 
+		exchanges in 1999 was about 507 million. By 2007, that number had grown to an all-time 
+		record of more than 3 billion.
+		</p>
+		
+		<p><h3> Learn more about option pricing !  </h3></p>
+		
+		<!-- <video class="center" src="{% static "css/video1.mp4" %}" controls poster="video1.jpg" width="600"></video> -->
+		
+		<br> </br>
+		
+		<div class="colonnes">
+			<p class="colonne">
+			<h2> What are options ? </h2>
+				<br></br>
+				<video class="center" src="{% static "css/video2.mp4" %}" controls poster="video2.jpg" width="270"></video>	
+				<br></br>				
+				<p>
+				In finance, an option is a contract which gives the buyer (the owner or holder of the option) 
+				the right, but not the obligation, to buy or sell an underlying asset or instrument at a 
+				specified strike price on a specified date, depending on the form of the option. 
+				</p>
+				<p>
+				The strike price may be set by reference to the spot price (market price) of the underlying security 
+				or commodity on the day an option is taken out, or it may be fixed at a discount or at a premium. 
+				The seller has the corresponding obligation to fulfill the transaction – to sell or buy – 
+				if the buyer (owner) "exercises" the option. 
+				</p>
+				<p> An option that conveys to the owner the right
+				to buy at a specific price is referred to as a call; an option that conveys the right of 
+				the owner to sell at a specific price is referred to as a put. Both are commonly traded, 
+				but the call option is more frequently discussed.
+				</p>
+				<h4>
+				Read more about Options on <a href="https://en.wikipedia.org/wiki/Option_(finance)"> Wikipedia</a> website
+				</h4>
+			</p>
+			
+			
+			<p class="colonne">
+				<h2> How to Price options ? </h2> 
+				<br></br>
+				
+				<p> Option pricing refers to the amount per share at which an option is traded. 
+				Options are derivative contracts that give the holder (the "buyer") the right, 
+				but not the obligation, to buy or sell the underlying instrument at an agreed-upon price 
+				on or before a specified future date. Although the holder of the option is not obligated 
+				to exercise the option, the option writer (the "seller") has an obligation to buy or sell 
+				the underlying instrument if the option is exercised.
+				</p>
+				<p>
+				Depending on the strategy, options trading can provide a variety of benefits, including 
+				the security of limited risk and the advantage of leverage. Another benefit is that options 
+				can protect or enhance your portfolio in rising, falling and neutral markets. Regardless of 
+				why you trade options – or the strategy you use – it's important to understand how options 
+				are priced. In this tutorial, we'll take a look at various factors that influence options 
+				pricing, as well as several popular options-pricing models that are used to determine 
+				the theoretical value of options.
+				</p>
+				<h4>
+				Read more about options pricing on <a href="https://www.investopedia.com/university/options-pricing/#ixzz55Qfv5RwJ"> Investopedia</a> website 
+				</h4>	
+			</p>		
+		</div>
+		
+		<video class="center" src="{% static "css/video.mp4" %}" controls poster="video.jpg" width="600"></video>
+
+		
+		
+	</div>
+	
+   	<div class="main_bottom">
+
+   	</div>
+    
+</div> 
+{% endblock %}

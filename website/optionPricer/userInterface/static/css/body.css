@@ -17,6 +17,8 @@ body {
   margin: 0 auto 0 auto;
  text-align:left;
  }
+ 
+ 
 #main 
 {
 margin-top:10px;
@@ -41,8 +43,6 @@ background-image:url(main_body.png);
 background-repeat:repeat-y;
 color:#000000;
 padding-bottom:20px;
-
-
 }
 
 
@@ -58,6 +58,8 @@ background-position:right;
 background-repeat:no-repeat;
 margin-right:25px;
 }
+
+
 
 #main .main_body p
 {
