@@ -251,6 +251,7 @@ class optionPricer():
             return [mu-ss.norm.cdf(1-alpha/2)*np.sqrt(V/n),
                     mu+ss.norm.cdf(1-alpha/2)*np.sqrt(V/n)]
 
+
 if __name__=="__main__":
     o=optionPricer(100,100,0.2,3,"BS","A",kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
     #print("reference price: {}".format(o.price("call",'bs')))
