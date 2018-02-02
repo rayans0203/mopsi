@@ -40,24 +40,27 @@
 		
 		
 		<p>
-		Exchange-traded options first started trading back in 1973. But over the past decade, 
-		the popularity of options has grown in leaps and bounds. According to data compiled by
-		the Options Industry Council, the total volume of options contracts traded on U.S. 
-		exchanges in 1999 was about 507 million. By 2007, that number had grown to an all-time 
-		record of more than 3 billion.
+		
+		Many applications in finance, in particular the pricing of financial instruments are based 
+		on Monte Carlo path simulations. It consists in numerically discretizing the stochastic differential 
+		equation governing the evolution of the price. The simplest estimate for this expected value is the mean
+		of the payoff from several independent path simulations. The Multilevel Monte Carlo method, recently introduced by Giles,
+		Professor at the University of Oxford, exploits strong convergence properties to significantly improve numerical complexity 
+		by combining simulations with different levels of resolution .
+		
 		</p>
 		
 		<p><h3> Learn more about option pricing !  </h3></p>
 		
-		<!-- <video class="center" src="{% static "css/video1.mp4" %}" controls poster="video1.jpg" width="600"></video> -->
+		<p> <h3> A short introduction to options </h3>
+		<video class="center" src="{% static "css/video.mp4" %}" controls poster="video1.jpg" width="600"></video>	
+		</p>
 		
 		<br> </br>
 		
 		<div class="colonnes">
 			<p class="colonne">
-			<h2> What are options ? </h2>
-				<br></br>
-				<video class="center" src="{% static "css/video2.mp4" %}" controls poster="video2.jpg" width="270"></video>	
+			<h2> What are options ? </h2>	
 				<br></br>				
 				<p>
 				In finance, an option is a contract which gives the buyer (the owner or holder of the option) 
@@ -76,41 +79,92 @@
 				but the call option is more frequently discussed.
 				</p>
 				<h4>
-				Read more about Options on <a href="https://en.wikipedia.org/wiki/Option_(finance)"> Wikipedia</a> website
+				Read more about Options on <a href="https://en.wikipedia.org/wiki/Option_(finance)"> Wikipedia's</a> website
 				</h4>
 			</p>
 			
 			
 			<p class="colonne">
-				<h2> How to Price options ? </h2> 
+				<h2> How to price options ? </h2> 
 				<br></br>
-				
-				<p> Option pricing refers to the amount per share at which an option is traded. 
-				Options are derivative contracts that give the holder (the "buyer") the right, 
-				but not the obligation, to buy or sell the underlying instrument at an agreed-upon price 
-				on or before a specified future date. Although the holder of the option is not obligated 
-				to exercise the option, the option writer (the "seller") has an obligation to buy or sell 
-				the underlying instrument if the option is exercised.
-				</p>
 				<p>
 				Depending on the strategy, options trading can provide a variety of benefits, including 
-				the security of limited risk and the advantage of leverage. Another benefit is that options 
+				the security of limited risk and the advantage of leverage. 
+				<p>Another benefit is that options 
 				can protect or enhance your portfolio in rising, falling and neutral markets. Regardless of 
 				why you trade options – or the strategy you use – it's important to understand how options 
-				are priced. In this tutorial, we'll take a look at various factors that influence options 
-				pricing, as well as several popular options-pricing models that are used to determine 
-				the theoretical value of options.
+				are priced. 
 				</p>
 				<h4>
 				Read more about options pricing on <a href="https://www.investopedia.com/university/options-pricing/#ixzz55Qfv5RwJ"> Investopedia</a> website 
 				</h4>	
+				<br></br>
+				<video class="center" src="{% static "css/video.mp4" %}" controls poster="video2.jpg" width="270"></video>	
+				<br></br>	
 			</p>		
 		</div>
 		
-		<video class="center" src="{% static "css/video.mp4" %}" controls poster="video.jpg" width="600"></video>
-
+		<br> </br>
+		<p>
+		The canonical stochastic differential equation is written as:
+		<image class="center" src="{% static "css/f1.png" %}"  width="400"></image>
+		where S is the underlying asset price in the market.
+		</p>
+		<br> </br>
 		
+		<div class="colonnes">
+			<p class="colonne">
+			<h2> Monte Carlo Method </h2>
+			<br></br>
+			<u1>
+				<li>Discretization of time</li>
+				<image class="center" src="{% static "css/f2.png" %}"  width="150"></image>
+				<li> Starting from the initial stochastic differential equation, 
+				the Euler scheme gives the following discretization:
+				<image class="center" src="{% static "css/f3.png" %}"  width="300"></image>
+				The simulation thus amounts to the simulation of the increases of W which follow the normal law:
+				<image class="center" src="{% static "css/f4.png" %}"  width="170"></image>
+				</li>
+				<li> Estimation of the payoff by the average of N independent samples: 
+				<image class="center" src="{% static "css/f5.png" %}"  width="200"></image>
+				where <image src="{% static "css/f6.png" %}"  width="70"></image> are iid samples 
+				<image src="{% static "css/f7.png" %}"  width="10"></image> of law.
+				</li>
+			</u1>
 		
+			<p class="colonne">
+			<h2> Multilevel Monte Carlo Method </h2>
+			<br></br>
+			<u1>
+				<li>Geometric discretization of time</li>
+				<image class="center" src="{% static "css/f8.png" %}"  width="150"></image>
+				where m is a non-zero integer.
+				Cette discrétisation permet un raffinement graduel, le pas de temps 
+				tendant à se réduire progressivement.
+				<li> Decomposition of the payoff function :
+				Let's note <image src="{% static "css/f9.png" %}"  width="10"></image>
+				the estimate of the payoff :
+				<image class="center" src="{% static "css/f10.png" %}"  width="200"></image>
+				<image  src="{% static "css/f11.png" %}"  width="30"></image> is estimated by :
+				<image  class="center" src="{% static "css/f12.png" %}"  width="100"></image>
+				and <image src="{% static "css/f13.png" %}"  width="70"></image> 
+				independently by :
+				<image class="center" src="{% static "css/f14.png" %}"  width="150"></image>
+				</li>
+			</u1>
+			
+		</div>
+		
+		<br> </br>
+		<p> For more information on the method and its results in terms of complexity 
+		and precision, you can read our work 
+		<a href="{% static "css/mopsi.pdf" %}" title="Pdf">here</a>.
+		</p>
+		
+		<br> </br>
+		
+		<embed class="center"  src="{% static "css/mopsi.pdf" %}" width="800" height="500" type='application/pdf'/> 
+	
 	</div>
 	
    	<div class="main_bottom">
@@ -118,4 +172,6 @@
    	</div>
     
 </div> 
+
+
 {% endblock %}
