@@ -4,64 +4,51 @@ import multiprocessing as mp
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-o=optionPricer(100,100,0.25,1,r=0.05)
+o=optionPricer(100,100,0.2,3,"BS","E","milstein",kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
 
 ########### Calcul de l'erreur d'une méthode par rapport à la réference (formule de Black-Scholes) ###########
 
-## tentative de paralléliser le calcul de MSE 
-
-# class MSE_computation():
-#     def __init__(self):
-#         self.err=0
-#         self.times=[]
-#     def __call__(self,ref,pricer,simulations,method):
-#         omc,t=pricer.price(method,N=simulations)
-#         self.err+=(omc-ref)**2
-#         self.times.append(t)
-#         return self.err,self.times
-
-# def mse(ref,pricer,simulations,method="mc",max_iter=100):
-#     pool=mp.Pool(4)
-#     future_res=[pool.apply_async(MSE_computation(),(ref,pricer,simulations,method)) for _ in range(max_iter)]
-#     data=[f.get() for f in future_res]
-#     err=np.sum([data[k][0] for k in range(len(data))])
-#     times=[data[k][1] for k in range(len(data))]
-#     return err/max_iter,np.mean(times)
-
-def mse(ref,pricer,n,N,method,pool=None,max_iter=300):
+def mse(ref,pricer,n,N,method,pool=None,max_iter=100):
     err=0
     times=[]
+
     for _ in range(max_iter):
         print(method+' {}% '.format(100*_/max_iter))
-        output=pricer.price(method,pool,N=N,n=n)
+        output=pricer.price("call",method,N=N,n=n)
         omc,t=output[0],output[1]
         err+=(omc-ref)**2
         times.append(t)
     return err/max_iter,np.mean(times)
 
-obs=o.price(method="bs")
-a=np.array([20,30,50,60,70,80])
+obs,t_ref=o.price("call",method="bs")
+#obs=18.501473532023425 #asiat
+#obs=62.58904549 #pour le modele de Heston
+
+a=np.array([25,30,35,40])
+loga=np.log(a)*a
 
 ########## Comparison of MLMC and MC ###############
 
-pool=mp.Pool(4)
+#pool=mp.Pool(4)
 #a_SA=list(map(lambda x: simulated_annealing(x,polynom),a))
 #a_locsearch=list(map(lambda x: loc_search(x,1e-3,4,10),a))
-a_diko=list(map(lambda x: loc_search(x,1e-2,7,10,2,3500),a))
-outputs_m1lmc=list(map(lambda x,y: mse(obs,o,x,y,"m1lmc"),a,a_diko))
-MSE_m1lmc=[outputs_m1lmc[k][0] for k in range(len(outputs_m1lmc))]
-TIMES_m1lmc=[outputs_m1lmc[k][1] for k in range(len(outputs_m1lmc))]
+#a_ls=list(map(lambda x: loc_search(x,1e-2,7,10,100,4000),a))
+#a_ls=[77,664,649,1062,6783,7187]
+a_ls_hes=[500,450,700,900]
+
+outputs_mc=list(map(lambda x,y: mse(obs,o,x,y,"mc"),a,a_ls_hes))
+MSE_mc=[outputs_mc[k][0] for k in range(len(outputs_mc))]
+TIMES_mc=[outputs_mc[k][1] for k in range(len(outputs_mc))]
 
 outputs_mlmc=list(map(lambda x: mse(obs,o,x,0,"mlmc"),a))
 MSE_mlmc=[outputs_mlmc[k][0] for k in range(len(outputs_mlmc))]
 TIMES_mlmc=[outputs_mlmc[k][1] for k in range(len(outputs_mlmc))]
 
-plt.plot(np.log10(TIMES_m1lmc),np.log10(MSE_m1lmc),marker='s',label="EE")
-plt.plot(np.log10(TIMES_mlmc),np.log10(MSE_mlmc),marker="o",label="MLMC")
+plt.plot(np.log(TIMES_mc),np.log(MSE_mc),marker='s',label="MC with Milstein scheme")
+plt.plot(np.log(TIMES_mlmc),np.log(MSE_mlmc),marker="o",label="MLMC with Milstein scheme")
 plt.grid(True)
-plt.xlabel("log of the computation time")
-plt.ylabel("log of the MSE")
+plt.xlabel("log of computation time")
+plt.ylabel("log of MSE")
 plt.legend(loc=1)
 plt.show()
 

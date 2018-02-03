@@ -21,24 +21,19 @@ void BlackScholes::euler_MLMC(double& S_thin, double& S_coarse,
 
 void BlackScholes::riemann_MC(double &I, const int &n_euler, const double &dt) const{
     vector<double> W=build_BM(n_euler,sqrt(dt));
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::normal_distribution<double> distribution(0.0,1.0);
-    for (int i = 0; i < n_euler;i++) I+=(dt/2)*(exp((r-0.5*vol*vol)*i*dt+vol*sqrt(i*dt)*distribution(gen))
-                                                    +exp((r-0.5*vol*vol)*(i+1)*dt+vol*sqrt((i+1)*dt)*distribution(gen)));
+    for (int i = 0; i < n_euler;i++) I+=(dt/2)*(exp((r-0.5*vol*vol)*i*dt+vol*sqrt(i*dt)*W.at(i))
+                                                    +exp((r-0.5*vol*vol)*(i+1)*dt+vol*sqrt((i+1)*dt)*W.at(i+1)));
 }
 
 void BlackScholes::riemann_MLMC(double& I_thin, double& I_coarse,
                                 const double& dt_thin, const double& dt_coarse,
                                 const int& n_euler, const int& m_levels) const{
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::normal_distribution<double> distribution(0.0,1.0);
+    vector<double> W=build_BM(n_euler,sqrt(dt_thin));
     for (int i=0; i < n_euler;i++){
-        I_thin+=(dt_thin/2)*(exp((r-0.5*vol*vol)*i*dt_thin+vol*sqrt(i*dt_thin)*distribution(gen))
-                                 +exp((r-0.5*vol*vol)*(i+1)*dt_thin+vol*sqrt((i+1)*dt_thin)*distribution(gen)));
-        if (i%m_levels==0) I_coarse+=(dt_coarse/2)*(exp((r-0.5*vol*vol)*i*dt_coarse+vol*sqrt(i*dt_coarse)*distribution(gen))
-                                                        +exp((r-0.5*vol*vol)*(i+1)*dt_coarse+vol*sqrt((i+1)*dt_coarse)*distribution(gen)));
+        I_thin+=(dt_thin/2)*(exp((r-0.5*vol*vol)*i*dt_thin+vol*sqrt(i*dt_thin)*W.at(i))
+                                 +exp((r-0.5*vol*vol)*(i+1)*dt_thin+vol*sqrt((i+1)*dt_thin)*W.at(i+1)));
+        if (i%m_levels==0) I_coarse+=(dt_coarse/2)*(exp((r-0.5*vol*vol)*i*dt_coarse+vol*sqrt(i*dt_coarse)*W.at(i/m_levels))
+                                                        +exp((r-0.5*vol*vol)*(i+1)*dt_coarse+vol*sqrt((i+1)*dt_coarse)*W.at((i+1)/m_levels)));
     }
 }
 

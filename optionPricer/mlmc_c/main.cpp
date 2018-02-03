@@ -13,9 +13,9 @@ int main(){
     const double theta=0.9;
     const double v0=0.1;
 
-    const int N_samples=10000;
-    const int n_euler=100;
-    const int m_levels=2;
+    const int N_samples=100000;
+    const int n_euler=50;
+    const int m_levels=7;
 
     Payoff* payoff= new PayoffCall(K);
     //Model* model= new BlackScholes(r,vol);
