@@ -57,14 +57,18 @@ def build_Cox_Ross(W,rho,kappa,theta,xi,dt,pricer):
     n=W.shape[0]-1
     W_rho_acc=W_rho[1:]-W_rho[:n]
     v=np.ones(n)*pricer.v0
-    for k in range(n-1):
-        v[k+1]=abs(v[k]+kappa*(theta-v[k])*dt+xi*np.sqrt(v[k])*W_rho_acc[k])
+    if pricer.sch=="euler":      
+        for k in range(n-1):
+            v[k+1]=v[k]+kappa*(theta-max(v[k],0))*dt+xi*np.sqrt(max(v[k],0))*W_rho_acc[k]
+    elif pricer.sch=="milstein":
+        for k in range(n-1):
+            v[k+1]=v[k]+kappa*(theta-max(v[k],0))*dt+xi*np.sqrt(max(v[k],0))*W_rho_acc[k]+0.25*xi*xi*dt*(W_rho_acc[k]*W_rho_acc[k]-1)
     return v
 
 ######### OptionPricer class ##########
 
 class optionPricer():
-    def __init__(self,S0,K,sigma,T,model,option_type,order="call",r=np.log(1.1),**kwargs):
+    def __init__(self,S0,K,sigma,T,model,option_type,sch,order="call",r=np.log(1.1),**kwargs):
         self.order=order
         self.S0=S0
         self.strike=K
@@ -72,6 +76,7 @@ class optionPricer():
         self.vol=sigma
         self.maturity=T
         self.model=model
+        self.sch=sch
         self.option_type=option_type
         if model=="Heston":
             self.kappa=kwargs["kappa"]
@@ -86,12 +91,18 @@ class optionPricer():
             return self.S0*ss.norm.cdf(d1)-self.strike*np.exp(-self.rate*self.maturity)*ss.norm.cdf(d2)
         if self.order=="put":
             return self.strike*np.exp(-self.rate*self.maturity)*ss.norm.cdf(-d2)-self.S0*ss.norm.cdf(-d1)
-    def euler(self,S,dt,W,*v):
-        """ pour l instant, on ne considère que des options européennes """
-        if self.model=="BS":
-            return S*(1+self.rate*dt+self.vol*W)
-        elif self.model=="Heston":
-            return S*(1+self.rate*dt+np.sqrt(v[0])*W)
+    def schema(self,S,dt,W,*v):
+        if self.sch=="euler":   
+            """ pour l instant, on ne considère que des options européennes """
+            if self.model=="BS":
+                return S*(1+self.rate*dt+self.vol*W)
+            elif self.model=="Heston":
+                return S*np.exp((self.rate-0.5*v[0])*dt+np.sqrt(v[0])*W)
+        if self.sch=="milstein":
+            if self.model=="BS":
+                return S*(1+(self.rate-0.5*self.vol*self.vol)*dt+self.vol*W+0.5*self.vol*self.vol*W*W)
+            elif self.model=="Heston":
+                return S*np.exp((self.rate-0.5*v[0])*dt+np.sqrt(v[0])*W)
     def payoff(self,S):
         """ S est un numpy.array """
         if self.order=="call":
@@ -124,11 +135,11 @@ class optionPricer():
                 if self.model=="Heston":
                     v=build_Cox_Ross(W,self.rho,self.kappa,self.theta,self.xi,dt,self)
                     for k in range(n):
-                        S=self.euler(S,dt,W_ind[k],v[k])
+                        S=self.schema(S,dt,W_ind[k],max(v[k],0))
                 else:
                     if self.option_type=="E":
                         for k in range(n):
-                            S=self.euler(S,dt,W_ind[k])
+                            S=self.schema(S,dt,W_ind[k])
                     elif self.option_type=="A":
                         S=0
                         for k in range(n):
@@ -148,18 +159,17 @@ class optionPricer():
         if self.option_type=="E":
             N0=int((m-1)*self.maturity*(n**2)*L)
         elif self.option_type=="A":
-            N0=int((m**2-1)*(n**2)*(1-1/np.sqrt(n))/(np.sqrt(m-1)))
-        S_N0=self.S0
+            N0=int((m**2-1)*(n**2)*(1-1/np.sqrt(n))/(np.sqrt(m)-1))
         W_N0=np.random.normal(0,np.sqrt(self.maturity),N0)
         Payoff=0
         if self.model=="Heston":
             for j in range(N0):
-                S_N0=self.euler(self.S0,self.maturity,W_N0[j],self.v0)
+                S_N0=self.schema(self.S0,self.maturity,W_N0[j],self.v0)
                 Payoff+=self.payoff(S_N0)
         else:
             if self.option_type=="E":
                 for j in range(N0):
-                    S_N0=self.euler(self.S0,self.maturity,W_N0[j])
+                    S_N0=self.schema(self.S0,self.maturity,W_N0[j])
                     Payoff+=self.payoff(S_N0)
             elif self.option_type=="A":
                 for j in range(N0):
@@ -167,7 +177,6 @@ class optionPricer():
                     S_N0+=(1/2)*(self.S0+self.calcul_BS(self.maturity,W_N0[j]))
                     Payoff+=self.payoff(S_N0)     
         Payoff/=N0
-
         # for l>1
         # inverser le role de n et L, c est n qui donne L
         for l in range(1,L):
@@ -180,7 +189,6 @@ class optionPricer():
                 Nl=int(N0/(m**(3*l/2)))
             else:
                 raise AttributeError("'option_type' attribute must be either 'E' (european) or 'A' (asian).")
-
             for j in range(Nl):
                 payoff_j=0
                 
@@ -198,28 +206,27 @@ class optionPricer():
                     v_thin=build_Cox_Ross(W_thin,self.rho,self.kappa,self.theta,self.xi,dt_thin,self)
                     v_coarse=build_Cox_Ross(W_coarse,self.rho,self.kappa,self.theta,self.xi,dt_coarse,self)
                     for i in range(m**l):
-                        S_thin=self.euler(S_thin,dt_thin,np.random.normal(0,np.sqrt(dt_thin)),v_thin[i])
+                        S_thin=self.schema(S_thin,dt_thin,W_thin[i+1]-W_thin[i],max(v_thin[i],0))
                         if i%m==0:
-                            S_coarse=self.euler(S_coarse,dt_coarse,np.random.normal(0,np.sqrt(dt_coarse)),v_coarse[i//m])
-                    payoff_j+=self.payoff(S_thin)-self.payoff(S_coarse)
+                            S_coarse=self.schema(S_coarse,dt_coarse,W_coarse[i//m+1]-W_coarse[i//m],max(v_coarse[i//m],0))
                 elif self.model=="BS":
                     if self.option_type=="E":
+                        W_ind=np.random.normal(0,np.sqrt(dt_thin),m**l)
                         for i in range(m**l):
-                            S_thin=self.euler(S_thin,dt_thin,np.random.normal(0,np.sqrt(dt_thin)))
+                            S_thin=self.schema(S_thin,dt_thin,W_ind[i])
                             if i%m==0:
-                                S_coarse=self.euler(S_coarse,dt_coarse,np.random.normal(0,np.sqrt(dt_coarse)))
+                                S_coarse=self.schema(S_coarse,dt_coarse,np.random.normal(0,np.sqrt(dt_coarse)))
                     elif self.option_type=="A":
                         S_thin=0
                         S_coarse=0
                         for i in range(m**l):
                             S_thin+=(dt_thin/(2*self.maturity))*(self.calcul_BS(i*dt_thin,W_thin[i])+self.calcul_BS((i+1)*dt_thin,W_thin[i+1]))
                             if i%m==0:
-                                S_coarse+=(dt_coarse/(2*self.maturity))*(self.calcul_BS((i//m)*dt_coarse,W_coarse[i//m])+self.calcul_BS((i//m+1)*dt_coarse,W_coarse[(i+1)//m]))
+                                S_coarse+=(dt_coarse/(2*self.maturity))*(self.calcul_BS((i//m)*dt_coarse,W_coarse[i//m])+self.calcul_BS((i//m+1)*dt_coarse,W_coarse[i//m+1]))
                     else:
                         raise AttributeError("'option_type' attribute must be either 'E' (european) or 'A' (asian).")
                                 
-                    payoff_j+=self.payoff(S_thin)-self.payoff(S_coarse)
-                Payoff+=payoff_j/Nl
+                Payoff+=(self.payoff(S_thin)-self.payoff(S_coarse))/Nl
         return np.exp(-self.rate*self.maturity)*Payoff
     def price(self,order,method="mc_e",pool=None,m=5,N=10**3,n=50,alpha=0.05):
         self.order=order
@@ -251,9 +258,25 @@ class optionPricer():
             return [mu-ss.norm.cdf(1-alpha/2)*np.sqrt(V/n),
                     mu+ss.norm.cdf(1-alpha/2)*np.sqrt(V/n)]
 
+    def delta(self,order,method,epsilon=1e-2):
+        base_price=self.price(order,method)[0]
+        self.S0+=epsilon
+        new_price=self.price(order,method)[0]
+        delta=(new_price-base_price)/epsilon
+
+        self.S0-=epsilon
+        return delta
+
+    def gamma(self,order,method,epsilon=1e-2):
+        base_delta=self.delta(order,method)
+        self.S0+=epsilon
+        new_delta=self.delta(order,method)
+        gamma=(new_delta-base_delta)/epsilon
+
+        return gamma
 
 if __name__=="__main__":
-    o=optionPricer(100,100,0.2,3,"BS","A",kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
+    o=optionPricer(100,100,0.2,3,"BS","A","euler",kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
     #print("reference price: {}".format(o.price("call",'bs')))
     print("MC euler price: {}".format(o.price("call","mc")))
     print('MLMC price with Heston model: {}'.format(o.price("call","mlmc")))
