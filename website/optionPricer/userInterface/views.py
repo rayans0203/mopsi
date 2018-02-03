@@ -24,12 +24,21 @@ def computation(request,S0,K,sigma,T,r,Model,Type,Method):
 	T=float(T)
 	r=float(r)
 
-	o=mlmc.optionPricer(S0,K,sigma,T,Model,Type,r=r,kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
+	o=mlmc.optionPricer(S0,K,sigma,T,Model,Type,"euler",r=r,kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
 	call,time_call=o.price("call",Method)
 	put,time_put=o.price("put",Method)
+	delta_c=o.delta("call",Method)
+	delta_p=o.delta("put",Method)
+	gamma_c=o.gamma("call",Method)
+	gamma_p=o.gamma('put',Method)
 
 	# rajouter le calcul du delta, gamma et intervalle de confiance
 
-	context={'call':round(call,2),'put':round(put,2)}
+	context={'call':round(call,2),
+	'put':round(put,2),
+	'delta_call':round(delta_c,2),
+	'delta_put':round(delta_p,2),
+	'gamma_call':round(gamma_c,2),
+	'gamma_put':round(gamma_p,2)}
 
 	return HttpResponse(json.dumps(context))
