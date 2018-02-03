@@ -3,7 +3,7 @@
 	<script>
 		var xhr = new XMLHttpRequest();
 		var url = "http://127.0.0.1:8000/userInterface/pricer/"
-		var params="call={{call}}&put={{put}}"
+		var params="call={{call}}&put={{put}}&delta_call={{delta_call}}&delta_put={{delta_put}}&gamma_call={{gamma_call}}&gamma_put={{gamma_put}}"
 		xhr.open("POST", url, true);
 
 		//Send the proper header information along with the request

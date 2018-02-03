@@ -145,19 +145,40 @@
 			    xhr.onreadystatechange = function() { 
 			         if (xhr.readyState == 4 && xhr.status == 200){ // si la réponse du serveur a bien été reçue
 						var response = JSON.parse(this.responseText);
-						var callPriceText = document.createTextNode(response.call);
-						var callPrice = document.getElementById('callPrice');
 						function clearElement(element) {
 							while (element.firstChild) {
 								element.removeChild(element.firstChild);
 							}
 						}
+						var callPriceText = document.createTextNode(response.call);
+						var callPrice = document.getElementById('callPrice');
 						clearElement(callPrice);
 			           	callPrice.appendChild(callPriceText);
+
 						var putPriceText = document.createTextNode(response.put);
 						var putPrice = document.getElementById('putPrice');
 						clearElement(putPrice);
 						putPrice.appendChild(putPriceText);
+
+						var deltaCallText = document.createTextNode(response.delta_call);
+						var deltaCall=document.getElementById('callDelta');
+						clearElement(deltaCall);
+						deltaCall.appendChild(deltaCallText);
+
+						var deltaPutText = document.createTextNode(response.delta_put);
+						var deltaPut=document.getElementById('putDelta');
+						clearElement(deltaPut);
+						deltaPut.appendChild(deltaPutText);
+
+						var gammaCallText = document.createTextNode(response.gamma_call);
+						var gammaCall=document.getElementById('callGamma');
+						clearElement(gammaCall);
+						gammaCall.appendChild(gammaCallText);
+
+						var gammaPutText = document.createTextNode(response.gamma_put);
+						var gammaPut=document.getElementById('putGamma');
+						clearElement(deltaPut);
+						gammaPut.appendChild(gammaPutText);
 			         }
 			    }
 			   
