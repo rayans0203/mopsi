@@ -277,20 +277,37 @@ class optionPricer():
             return [mu-ss.norm.cdf(1-alpha/2)*np.sqrt(V/n),
                     mu+ss.norm.cdf(1-alpha/2)*np.sqrt(V/n)]
 
+    def delta(self,order,method,m,N,n,epsilon=1e-2):
+        base_price=self.price(order,method,m,N,n)[0]
+        self.S0+=epsilon
+        new_price=self.price(order,method,m,N,n)[0]
+        delta=(new_price-base_price)/epsilon
+
+        self.S0-=epsilon
+        return delta
+
+    def gamma(self,order,method,m,N,n,epsilon=1e-2):
+        base_delta=self.delta(order,method,m,N,n)
+        self.S0+=epsilon
+        new_delta=self.delta(order,method,m,N,n)
+        gamma=(new_delta-base_delta)/epsilon
+
+        return gamma
+
 if __name__=="__main__":
     # INPUTS
     order="call"    # call, put
-    S0=100
-    strike=100
-    rate=np.log(1.1)
-    vol=0.2
-    maturity=3
+    S0=81.828835277449068
+    strike=82.88436369475801
+    rate=0.0011455854239203812
+    vol=0.2416875923717947
+    maturity=1.058475222739113
     N=1000  # nb d 'échantillons pour  MonteCarlo classique avec schema numérique
-    n=50    # nb de pas de disrétisation pour schéma numérique 
+    n=100    # nb de pas de disrétisation pour schéma numérique 
     m=2     # détermine le nombre de niveau par L=log(n)/log(m)
-    model="BS"  # BS: Black-Scholes, Heston: Heston
-    sch="euler" # euler, milstein
-    option_type="E" # E: european, A: asian
+    model="Heston"  # BS: Black-Scholes, Heston: Heston
+    sch="milstein" # euler, milstein
+    option_type="A" # E: european, A: asian
 
     o=optionPricer(S0,strike,vol,maturity,model,option_type,sch,r=rate,kappa=3,rho=0,xi=0.2,theta=.9,v0=0.1)
     
