@@ -9,7 +9,7 @@ body {
     margin: 0;
     padding: 0;
     background: #C1C1C1;
-    background-image: url(background.png);
+    background-image: url(../png/background.png);
     text-align: left;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -17,26 +17,31 @@ body {
 }
 *
 {
-  margin: 0 auto 0 auto;
+ margin: 0 auto 0 auto;
  text-align:left;}
+ 
+#logo
+{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
 
 
 #header h1
 {
-display:block;
-float:left;
-line-height:70px;
-margin-left:17px;
-width:230px;
-color:#FFFFFF;
-text-align:left;
-font-size:20px;
-font-weight:bold;
-font-family:Arial, Helvetica, sans-serif;
-float:left;
-
+    display:block;
+    float:left;
+    line-height:70px;
+    margin-left:17px;
+    width:230px;
+    color:#FFFFFF;
+    text-align:left;
+    font-size:20px;
+    font-weight:bold;
+    font-family:Arial, Helvetica, sans-serif;
+    float:left;
 }
-
 
 #header ul {
     padding-left: 0px;
@@ -54,7 +59,6 @@ float:left;
     line-height:72px;
     width:133px;
     color:#FFFFFF;
-
     font-size:16px;
     font-weight:bold;
     text-decoration:none;
@@ -66,10 +70,42 @@ color:#CCCCCC;
 
 #header
 {
-background-image: url(header.png);
-background-repeat:no-repeat;
-width:920px;
-height:72px;
+    background-image: url(../png/slide.png);
+    border-radius: 5px;
+    background-repeat:no-repeat;
+    width:2000px;
+    height:75px;
+    border-radius: 10px;
+    position: relative;
 }
+
+#header_cover
+{
+    margin-top: 5px;
+    height: 200px;
+    border-radius: 5px;
+    background: url(../png/bourse_header.png) no-repeat;
+    position: relative;
+    margin-bottom: 7px;
+}
+
+#banniere_description
+{
+    position: absolute;
+    bottom: 0;
+    border-radius: 0px 0px 5px 5px;
+    width: 99.5%;
+    height: 20px;
+    padding-top: 10px;
+    padding-right: 4px;
+    background-color: rgba(24,24,24,0.6);
+    color: white;
+    font-size: 1em;
+    margin-right:100px;
+    text-align: right;
+    
+}
+
+
 
 </style>
