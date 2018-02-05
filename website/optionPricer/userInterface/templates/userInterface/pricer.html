@@ -1,4 +1,4 @@
-{% extends 'userInterface/theslant/header.html' %}
+{% extends 'userInterface/header.html' %}
 
 {% block content %}
  <div id="main">
@@ -8,28 +8,8 @@
     </div>
 
    	<div class="main_body">
-		<style type="text/css">
-			.form_col {
-				text-align: left;
-				display: inline-block;
-				margin-right: 15px;
-				padding: 3px 0px;
-				width: 70px;
-				min-height: 1px;
-				text-align: right;
-			}
-			input {
-				margin-left:10px;
-				padding: 2px;
-				border: 1px solid #CCC;
-				border-radius: 2px;
-				outline: none; 
-				}
-			
-		</style>	
-    
 	
-		<form id="paramForm" style="width=55%">
+		<form id="paramForm" style="width:45%;display:inline-block">
 			
 			<label class="form_col" for="Stock">Stock :</label>
 			<input name="Stock" id="Stock" type=number step="0.001" min="0" value="100"/>
@@ -84,16 +64,17 @@
 			<input type="submit" value="Calculate" /> <input type="reset" value="Cancel " />
 		
 		</form>
-		
-		<table style="width:50%; display:inline-block; padding-left:50px">
+		<table style="width:40%;display:inline-block;padding-left:30px" class="table table-striped">
 			<col width="40%">
 			<col width="25%">
 			<col width="25%">
+			<thead>
 			<tr>
 				<th> Outputs </th>
 				<th> Call Option</th> 
 				<th> Put Option</th>
 			</tr>
+			</thead>
 			<tr>
 				<td>Theoretical price</td>
 				<td id="callPrice"> </td>
@@ -107,19 +88,16 @@
 			<tr>
 				<td>Gamma</td>
 				<td id="callGamma"> </td>
-				<td id="callGamma"> </td>
+				<td id="putGamma"> </td>
 			</tr>
 		</table> 
-		
+
+
 	</div>
-	
-	<!--<script src="C:/Users/linaf/Desktop/mopsi/website/optionPricer/userInterface/static/js" type="text/javascript"></script>-->
-	
+
 	<script>
+	(function inputOutput() { 
 	
-	(function() { 
-	
-			// tuto : https://openclassrooms.com/courses/dynamisez-vos-sites-web-avec-javascript/tp-un-formulaire-interactif-1
 			var paramForm = document.getElementById('paramForm'),
 				inputs = document.querySelectorAll('input[type=text], input[type=password]'),
 				inputsLength = inputs.length;
@@ -136,20 +114,35 @@
 				var Model = model.options[model.selectedIndex].value;
 				var Volatility=document.getElementById('Volatility').value;
 				var InterestRates=document.getElementById('InterestRates').value;
-				
-				// PARTIE RAYAN: ESSAI
-				var xhr = new XMLHttpRequest();
 
 				var entries=String(Stock)+'/'+String(Strike)+'/'+String(Volatility)+'/'+String(Maturity)+'/'+String(InterestRates)+'/'+String(Model)+'/'+String(Type)+'/'+String(Method)+'/';
+				
+				// gestion d'inputs qui combinés ne sont pas bonnes. (p.ex. on ne peut calculer une option asiatique avec la formule de Black-Scholes)
+				if(Type=="Asian" && (Method=="Black-Scholes" || Method=="Monte-Carlo Explicit") ){
+					alert("Cannot calculate price of Asian option with 'Black-Scholes' or 'Monte-Carlo explicit' method. Switch to another method or to another option type.");
+					entries='';
+				}	
+				else if(Type=="Asian" && (Model=="Heston") ){
+					alert("Cannot calculate price of Asian option with 'Black-Scholes' or 'Heston' model. Switch to another model or to another option type.");
+					entries='';
+				}	
+				else if(Model=="Heston" && (Method=="Black-Scholes" || Method=="Monte-Carlo Explicit") ){
+					alert("Cannot calculate price of an option with 'Heston' model and 'Black-Scholes' or 'Monte-Carlo explicit' method. Switch to another method or to another option type.");
+					entries='';
+				}	
+
+				var xhr = new XMLHttpRequest();
+
 				xhr.open("GET", 'http://127.0.0.1:8000/userInterface/computation/'+entries, true); // true for asynchronous 
 			    xhr.onreadystatechange = function() { 
-			         if (xhr.readyState == 4 && xhr.status == 200){ // si la réponse du serveur a bien été reçue
-						var response = JSON.parse(this.responseText);
-						function clearElement(element) {
-							while (element.firstChild) {
-								element.removeChild(element.firstChild);
-							}
+			        function clearElement(element) {
+						while (element.firstChild) {
+							element.removeChild(element.firstChild);
 						}
+					}
+					if (xhr.readyState == 4 && xhr.status == 200){ // si la réponse du serveur a bien été reçue
+					var response = JSON.parse(this.responseText);
+			
 						var callPriceText = document.createTextNode(response.call);
 						var callPrice = document.getElementById('callPrice');
 						clearElement(callPrice);
@@ -177,9 +170,9 @@
 
 						var gammaPutText = document.createTextNode(response.gamma_put);
 						var gammaPut=document.getElementById('putGamma');
-						clearElement(deltaPut);
+						clearElement(gammaPut);
 						gammaPut.appendChild(gammaPutText);
-			         }
+		        }
 			    }
 			   
 			    xhr.send(null);
@@ -197,8 +190,6 @@
 		})();
 	
 	</script>
-    
-   	<div class="main_bottom"></div>
     
 </div> 
 {% endblock %}
