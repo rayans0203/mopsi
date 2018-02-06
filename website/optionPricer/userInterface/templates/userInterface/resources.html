@@ -1,0 +1,148 @@
+{% extends 'userInterface/header.html' %}
+
+{% block content %}	
+{% load staticfiles %}
+ 
+ <div id="main">
+
+	<div class="main_top">
+    	<h1> Resources </h1>
+		
+    </div>
+		
+   	<div class="main_body">
+		
+		
+		<p>
+		
+		Many applications in finance, in particular the pricing of financial instruments are based 
+		on Monte Carlo path simulations. It consists in numerically discretizing the stochastic differential 
+		equation governing the evolution of the price. The simplest estimate for this expected value is the mean
+		of the payoff from several independent path simulations. The Multilevel Monte Carlo method, recently introduced by Giles,
+		Professor at the University of Oxford, exploits strong convergence properties to significantly improve numerical complexity 
+		by combining simulations with different levels of resolution .
+		
+		</p>
+		
+		<p><h3> Learn more about option pricing !  </h3></p>
+		
+		<p> <h3> A short introduction to options </h3>
+		<video class="center" src="{% static "mp4/video1.mp4" %}" controls poster="{% static "png/video1.png" %}" width="600"></video>	
+		</p>
+		
+		<br> </br>
+		
+		<div class="colonnes">
+			<p class="colonne">
+			<h2> What are options ? </h2>	
+				<br></br>				
+				<p>
+				In finance, an option is a contract which gives the buyer (the owner or holder of the option) 
+				the right, but not the obligation, to buy or sell an underlying asset or instrument at a 
+				specified strike price on a specified date, depending on the form of the option. 
+				</p>
+				<p>
+				The strike price may be set by reference to the spot price (market price) of the underlying security 
+				or commodity on the day an option is taken out, or it may be fixed at a discount or at a premium. 
+				The seller has the corresponding obligation to fulfill the transaction – to sell or buy – 
+				if the buyer (owner) "exercises" the option. 
+				</p>
+				<p> An option that conveys to the owner the right
+				to buy at a specific price is referred to as a call; an option that conveys the right of 
+				the owner to sell at a specific price is referred to as a put. Both are commonly traded, 
+				but the call option is more frequently discussed.
+				</p>
+				<h4>
+				Read more about Options on <a href="https://en.wikipedia.org/wiki/Option_(finance)"> Wikipedia's</a> website
+				</h4>
+			</p>
+			
+			
+			<p class="colonne">
+				<h2> How to price options ? </h2> 
+				<br></br>
+				<p>
+				Depending on the strategy, options trading can provide a variety of benefits, including 
+				the security of limited risk and the advantage of leverage. 
+				<p>Another benefit is that options 
+				can protect or enhance your portfolio in rising, falling and neutral markets. Regardless of 
+				why you trade options – or the strategy you use – it's important to understand how options 
+				are priced. 
+				</p>
+				<h4>
+				Read more about options pricing on <a href="https://www.investopedia.com/university/options-pricing/#ixzz55Qfv5RwJ"> Investopedia</a> website 
+				</h4>	
+				<br></br>
+				<video class="center" src="{% static "mp4/video.mp4" %}" controls poster="{% static "png/video2.png" %}" width="270"></video>	
+				<br></br>	
+			</p>		
+		</div>
+		
+		<br> </br>
+		<p>
+		The canonical stochastic differential equation is written as:
+		<image class="center" src="{% static "png/f1.png" %}"  width="400"></image>
+		where S is the underlying asset price in the market.
+		</p>
+		<br> </br>
+		
+		<div class="colonnes">
+			<p class="colonne">
+			<h2> Monte Carlo Method </h2>
+			<br></br>
+			<u1>
+				<li>Discretization of time</li>
+				<image class="center" src="{% static "png/f2.png" %}"  width="150"></image>
+				<li> Starting from the initial stochastic differential equation, 
+				the Euler scheme gives the following discretization:
+				<image class="center" src="{% static "png/f3.png" %}"  width="300"></image>
+				The simulation thus amounts to the simulation of the increases of W which follow the normal law:
+				<image class="center" src="{% static "png/f4.png" %}"  width="170"></image>
+				</li>
+				<li> Estimation of the payoff by the average of N independent samples: 
+				<image class="center" src="{% static "png/f5.png" %}"  width="200"></image>
+				where <image src="{% static "png/f6.png" %}"  width="70"></image> are iid samples 
+				<image src="{% static "png/f7.png" %}"  width="10"></image> of law.
+				</li>
+			</u1>
+		
+			<p class="colonne">
+			<h2> Multilevel Monte Carlo Method </h2>
+			<br></br>
+			<u1>
+				<li>Geometric discretization of time</li>
+				<image class="center" src="{% static "png/f8.png" %}"  width="150"></image>
+				where m is a non-zero integer.
+				Cette discrétisation permet un raffinement graduel, le pas de temps 
+				tendant à se réduire progressivement.
+				<li> Decomposition of the payoff function :
+				Let's note <image src="{% static "png/f9.png" %}"  width="10"></image>
+				the estimate of the payoff :
+				<image class="center" src="{% static "png/f10.png" %}"  width="200"></image>
+				<image  src="{% static "png/f11.png" %}"  width="30"></image> is estimated by :
+				<image  class="center" src="{% static "png/f12.png" %}"  width="100"></image>
+				and <image src="{% static "png/f13.png" %}"  width="70"></image> 
+				independently by :
+				<image class="center" src="{% static "png/f14.png" %}"  width="150"></image>
+				</li>
+			</u1>
+			
+		</div>
+		
+		<br> </br>
+		<p> For more information on the method and its results in terms of complexity 
+		and precision, you can read our work 
+		<a href="{% static "css/mopsi.pdf" %}" title="Pdf">here</a>.
+		</p>
+		
+		<br> </br>
+		
+		<embed class="center"  src="{% static "pdf/mopsi.pdf" %}" width="800" height="500" type='application/pdf'/> 
+	
+	</div>
+	
+    
+</div> 
+
+
+{% endblock %}

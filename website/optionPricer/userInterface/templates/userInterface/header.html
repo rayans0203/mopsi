@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>POP</title>
+    {% load staticfiles %}
+    
+  </head>
+  
+  <header>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/header.css' %}">
+
+      <div id="page">
+        <div id="header">   
+          <img src="{% static "png/logo.png" %}" alt="logo" height="60" width="70" align="left"/> 
+          <a href="http://127.0.0.1:8000/userInterface/home"><h1>Ponts Option Pricer</h1></a>
+        </div>
+        
+        <div id="header_cover">
+          <div id="banniere_description">
+            Calculating the price of an option has never been easier...
+          </div>
+        </div>
+
+        <div id="header">
+        <ul>
+          <li><a href="http://127.0.0.1:8000/userInterface/home">Home</a></li>
+          <li><a href="http://127.0.0.1:8000/userInterface/pricer">Pricer</a></li>
+          <li><a href="http://127.0.0.1:8000/userInterface/resources">Resources</a></li>
+          <li><a href="http://127.0.0.1:8000/userInterface/faq">FAQ</a></li>
+          
+        </ul>
+        </div>
+      </div>
+  
+  </header>
+  
+  <body>
+  <body>
+    
+    <div id="page">
+      <link rel="stylesheet" href="{% static 'css/body.css' %}" type="text/css"> 
+      {% block content %}
+      <h1> Content goes here </h1>
+      {% endblock %}
+    </div>
+  
+  </body>
+
+  <footer>
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}" type="text/css">
+  
+    <div id="page">
+      <div id="footer">
+      </div>
+        </div>
+  </footer>
+
+
+</html>

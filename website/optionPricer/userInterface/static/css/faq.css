@@ -1,0 +1,100 @@
+body{
+  margin: 20px auto;
+  width: 920px;
+  font: 14px 'trebuchet MS', Arial, Helvetica;
+  background: #f5f5f5 url(http://www.red-team-design.com/wp-content/uploads/2012/02/grid.png);
+}
+
+.faq-section{
+  margin: 0px 0;
+}
+
+.faq-section p, .faq-section input{
+  display: none;
+}   
+
+.faq-section label+p{
+  display: block; 
+  color: #999;
+  font-size: .85em;
+  -webkit-transition: all .15s ease-out; 
+  -moz-transition: all .15s ease-out;
+  -ms-transition: all .15s ease-out;
+  -o-transition: all .15s ease-out;
+  transition: all .15s ease-out;
+  /* Clipping text */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;           
+}
+
+.faq-section input[type=checkbox]:checked~p{
+  display: block;
+  color: #444;
+  font-size: 1em;
+  /* restore clipping defaults */
+  text-overflow: clip; 
+  white-space: normal;
+  overflow: visible;  
+}
+
+.faq-section label{
+  font-size: 1.2em;
+  cursor: pointer;
+  background: #eee;
+  display: block;
+  position: relative;
+  padding: 7px 10px;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  border-left: 3px solid #888;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  -webkit-transition: all .15s ease-out; 
+  -moz-transition: all .15s ease-out;
+  -ms-transition: all .15s ease-out;
+  -o-transition: all .15s ease-out;
+  transition: all .15s ease-out;      
+}
+
+.faq-section label::-moz-selection{ /* remove text selection when toggle-ing */
+  background: #000080;
+}
+
+.faq-section label::selection{
+  background: #000080;
+}
+
+.faq-section label:hover{
+  background: #E0FFFF;
+}
+
+.faq-section input[type=checkbox]:checked~label{
+  border-color: #E0FFFF;      
+  background: #E0FFFF;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#E0FFFF));
+  background-image: -webkit-linear-gradient(top, #fff, #E0FFFF); 
+  background-image: -moz-linear-gradient(top, #fff, #E0FFFF); 
+  background-image: -ms-linear-gradient(top, #fff, #E0FFFF); 
+  background-image: -o-linear-gradient(top, #fff, #E0FFFF); 
+  background-image: linear-gradient(to bottom, #fff, #E0FFFF);
+  -moz-box-shadow: 0 0 1px rgba(0,0,0,.4);
+  -webkit-box-shadow: 0 0 1px rgba(0,0,0,.4);
+  box-shadow: 0 0 1px rgba(0,0,0,.4);       
+}
+
+.faq-section label::before{
+  content: '';
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  margin-top: -6px;
+  border: 6px solid transparent;
+  border-left-color: inherit; 
+}
+
+.faq-section input[type=checkbox]:checked~label::before{
+  border: 6px solid transparent;
+  border-top-color: inherit;
+  margin-top: -3px;
+  right: 10px;  
+}

@@ -1,0 +1,21 @@
+{% extends 'userInterface/header.html' %}
+
+{% block content %}
+<div id="main">
+  <div class="main_top">
+    <h1>Frequenltly Asked Questions</h1>
+  </div>
+
+  <div class="main_body">
+    {% for post in object_list %}
+    <section class="faq-section">
+        <input type="checkbox" id="{{post.id}}">
+        <label for="{{post.id}}">{{post.title}}</label>           
+      <p>{{post.body}}</p>  
+    </section>
+    {% endfor %}
+    <a style="padding-left:20px" href="http://127.0.0.1:8000/userInterface/home/"> Home</a>
+  </div>
+</div>
+
+{% endblock %}
